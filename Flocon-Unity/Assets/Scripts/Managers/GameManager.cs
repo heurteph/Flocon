@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     private GameObject inputsManager;
     private GameObject menuManager;
 
-    private Vector2 start;
+    private Vector2 startZone;
 
-    private BoxCollider2D end;
+    private BoxCollider2D endZone;
 
     private bool isGameOver;
 
@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
 
             menuManager = GameObject.FindGameObjectWithTag("MenuManager");
             Debug.Assert(menuManager != null, "Missing menu manager");
+
+            startZone = GameObject.FindGameObjectWithTag("StartPosition").transform.position;
+            endZone = GameObject.FindGameObjectWithTag("FinishPosition").GetComponent<BoxCollider2D>();
         }
         else
         {
@@ -42,12 +45,21 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         isGameOver = false;
+
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().InitializePosition(startZone);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().EndLevelEvent += FinishGame;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void FinishGame()
+    {
+        // TO DO : Display credits
+        Application.Quit();
     }
 
     private void PauseGame(InputAction.CallbackContext ctx)

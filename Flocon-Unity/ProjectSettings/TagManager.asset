@@ -7,6 +7,8 @@ TagManager:
   - InputsManager
   - GameManager
   - MenuManager
+  - StartPosition
+  - FinishPosition
   layers:
   - Default
   - TransparentFX

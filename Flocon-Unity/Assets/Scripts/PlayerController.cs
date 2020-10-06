@@ -12,8 +12,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     [Range(0.01f,10f)]
-    [Tooltip("Speed")]
+    [Tooltip("Player speed")]
     private float speed;
+
+    public delegate void EndLevelHandler();
+    public event EndLevelHandler EndLevelEvent;
 
     private void Awake()
     {
@@ -42,8 +45,16 @@ public class PlayerController : MonoBehaviour
         transform.Translate(input * speed * Time.deltaTime, Space.World);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void InitializePosition(Vector2 origin)
     {
-        Debug.Log("Player collided with " + collision.otherCollider.name);
+        transform.position = origin;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("FinishPosition"))
+        {
+            EndLevelEvent();
+        }
     }
 }
