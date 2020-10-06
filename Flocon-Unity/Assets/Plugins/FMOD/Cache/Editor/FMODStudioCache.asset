@@ -50,16 +50,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 6042074953490890608}
-  - {fileID: -555935650845615924}
+  - {fileID: 239172366189185838}
   EditorEvents:
   - {fileID: 605833590434483052}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -555935650845615924}
+  - {fileID: 239172366189185838}
   StringsBanks:
   - {fileID: 6042074953490890608}
-  stringsBankWriteTime: 637375922373077367
+  stringsBankWriteTime: 637375992496160900
   cacheVersion: 3
+--- !u!114 &239172366189185838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637375992496140923
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &605833590434483052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,17 +93,15 @@ MonoBehaviour:
   Path: event:/UI_Clicked
   guid: 322ac65b40c8aa41ad4582f28d633da2
   Banks:
-  - {fileID: 1372555760553487956}
-  - {fileID: -5301743853473415602}
-  - {fileID: -555935650845615924}
+  - {fileID: 239172366189185838}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 1175
---- !u!114 &1372555760553487956
+  Length: 40
+--- !u!114 &2053596366868736380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,10 +115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
   SubDir: 
-  lastModified: 637375922373067391
+  lastModified: 637375992372988424
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &2600282385886261945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +136,7 @@ MonoBehaviour:
   lastModified: 637375888651617607
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &6042074953490890608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637375922373077367
+  lastModified: 637375992496160900
   LoadResult: 0
   FileSizes:
   - Name: Desktop
