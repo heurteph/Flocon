@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.00.00">
-	<object class="AudioFile" id="{bd255754-6ddd-4411-93f7-21d6e370d5e0}">
+	<object class="AudioFile" id="{aabc82aa-a81a-4544-a274-2520a791df6c}">
 		<property name="assetPath">
-			<value>fart_003.wav</value>
+			<value>rollover2.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
@@ -11,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>1.1752380952380952</value>
+			<value>0.057324263038548755</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{6e7a7494-4261-4bc8-bdd2-fc5df1211e4a}</destination>
