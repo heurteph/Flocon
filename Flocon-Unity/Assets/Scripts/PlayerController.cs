@@ -8,17 +8,16 @@ public class PlayerController : MonoBehaviour
 
     private GameObject inputsManager;
 
-    /* Internal references */
+    /* Settings */
 
-    private CharacterController characterController;
+    [SerializeField]
+    [Range(0.01f,10f)]
+    [Tooltip("Speed")]
+    private float speed;
 
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
-        if(characterController == null)
-        {
-            characterController = gameObject.AddComponent<CharacterController>();
-        }
+
     }
 
     // Start is called before the first frame update
@@ -38,8 +37,13 @@ public class PlayerController : MonoBehaviour
     {
         float movement = inputsManager.GetComponent<InputsManager>().ReadWalk();
         //Debug.Log("Read move : " + movement);
-        Vector2 speed = new Vector2(movement, 0);
+        Vector2 input = new Vector2(movement, 0);
 
-        GetComponent<CharacterController>().Move(speed);
+        transform.Translate(input * speed * Time.deltaTime, Space.World);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Player collided with " + collision.otherCollider.name);
     }
 }
