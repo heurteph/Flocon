@@ -59,6 +59,7 @@ public class InputsManager : MonoBehaviour
 
     private void OnDisable()
     {
-        inputs.Player.Disable();
+        Debug.Log("Inputs Manager disabled because of the pause");
+        //inputs.Player.Disable();
     }
 }

@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private void Walk()
     {
         float movement = inputsManager.GetComponent<InputsManager>().ReadWalk();
-        Debug.Log("Read move : " + movement);
+        //Debug.Log("Read move : " + movement);
         Vector2 speed = new Vector2(movement, 0);
 
         GetComponent<CharacterController>().Move(speed);
