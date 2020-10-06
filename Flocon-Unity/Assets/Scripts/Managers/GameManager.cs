@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
 
     private GameObject inputsManager;
+    private GameObject menuManager;
 
     private Vector2 start;
 
@@ -27,10 +28,13 @@ public class GameManager : MonoBehaviour
             inputsManager = GameObject.FindGameObjectWithTag("InputsManager");
             Debug.Assert(inputsManager != null, "Missing inputs manager");
             inputsManager.GetComponent<InputsManager>().RegisterPause(PauseGame);
+
+            menuManager = GameObject.FindGameObjectWithTag("MenuManager");
+            Debug.Assert(menuManager != null, "Missing menu manager");
         }
         else
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 
@@ -48,12 +52,13 @@ public class GameManager : MonoBehaviour
 
     private void PauseGame(InputAction.CallbackContext ctx)
     {
-        // TO DO : Halt game and display in-game menu
-        Debug.Log("Game paused !");
-    }
-
-    private void OnEnable()
-    {
-
+        if (!menuManager.GetComponent<MenuManager>().IsGamePaused())
+        {
+            menuManager.GetComponent<MenuManager>().PauseGame();
+        }
+        else
+        {
+            menuManager.GetComponent<MenuManager>().ResumeGame();
+        }
     }
 }

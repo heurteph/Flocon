@@ -5,19 +5,25 @@ using UnityEngine.InputSystem;
 
 public class InputsManager : MonoBehaviour
 {
-    private static Inputs inputs;
+    private Inputs inputs;
+
+    private static InputsManager instance;
 
     // Start is called before the first frame update
     void Awake()
     {
         // Singleton
-        if (inputs == null)
+        if (instance == null)
         {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+
+            // Awake
             inputs = new Inputs();
         }
         else
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 
@@ -32,6 +38,11 @@ public class InputsManager : MonoBehaviour
     public void RegisterPause(System.Action<InputAction.CallbackContext> func)
     {
         inputs.Player.Pause.performed += func;
+    }
+
+    public void UnregisterPause(System.Action<InputAction.CallbackContext> func)
+    {
+        inputs.Player.Pause.performed -= func;
     }
 
     /* Read inputs */
