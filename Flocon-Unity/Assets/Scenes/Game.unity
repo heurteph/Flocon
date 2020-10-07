@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xMaxSpeed: 2.5
-  xMinSpeed: 0
+  xMinSpeed: 0.5
   xAcceleration: 3
   xDeceleration: 3
   maxWalkToIdleAnimationTransitionDuration: 1
