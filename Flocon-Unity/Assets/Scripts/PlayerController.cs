@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FACING { RIGHT, LEFT, TRANSITION}
+
 public class PlayerController : MonoBehaviour
 {
     /* External references */
@@ -70,6 +72,8 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion targetRotation;
 
+    private FACING facing;
+
     public delegate void EndLevelHandler();
     public event EndLevelHandler EndLevelEvent;
 
@@ -93,6 +97,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
         initialOrientation = playerModel.transform.rotation;
         targetRotation = playerModel.transform.rotation;
+        facing = FACING.RIGHT;
     }
 
     // Start is called before the first frame update
@@ -119,6 +124,10 @@ public class PlayerController : MonoBehaviour
         // Get inputs
         float xInput = inputsManager.GetComponent<InputsManager>().ReadWalk();
 
+        if (facing == FACING.RIGHT)
+        {
+
+        }
         if (xInput != 0)
         {
             xSpeed = Mathf.Clamp(xSpeed + xInput * xAcceleration * Time.deltaTime, -xMaxSpeed, xMaxSpeed);
