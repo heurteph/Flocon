@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{ab510e6f-ca14-40b1-b74b-96724c50fd9c}">
+		<property name="assetPath">
+			<value>Frog Croaks [2020-10-06 152206].wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>18.850022675736962</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94be6338-ee5a-4c40-bfea-8c07387945e6}</destination>
+		</relationship>
+	</object>
+</objects>
