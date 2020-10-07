@@ -223,7 +223,7 @@ namespace FMODUnity
             CheckResult(system.getCoreSystem(out lowlevel));
 
             // Use play-in-editor speaker mode for event browser preview and metering
-            lowlevel.setSoftwareFormat(0, (FMOD.SPEAKERMODE)Settings.Instance.GetSpeakerMode(FMODPlatform.Default),0 );
+            lowlevel.setSoftwareFormat(0, Settings.Instance.GetEditorSpeakerMode(), 0);
 
             CheckResult(system.initialize(256, FMOD.Studio.INITFLAGS.ALLOW_MISSING_PLUGINS | FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, IntPtr.Zero));
 
@@ -833,6 +833,7 @@ namespace FMODUnity
             }
             catch (Exception)
             {
+                Debug.LogWarning("[FMOD] File used by another application. Failed to open " + path);
             }
             return open;
         }
