@@ -30,9 +30,9 @@ public class PlayerController : MonoBehaviour
 
 
     [SerializeField]
-    [Range(0.01f, 10f)]
+    [Range(0f, 10f)]
     [Tooltip("Walking min speed")]
-    private float xMinSpeed = 0.2f;
+    private float xMinSpeed = 0f;
 
     private float xSpeed;
 
@@ -89,7 +89,12 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion targetRotation;
 
+    private Vector2 currentForward;
+
     private FACING facing;
+
+    private Vector2 groundNormal;
+    private Vector2 groundTangent;
 
     public delegate void EndLevelHandler();
     public event EndLevelHandler EndLevelEvent;
@@ -119,9 +124,13 @@ public class PlayerController : MonoBehaviour
         ySpeed = 0;
         isGrounded = false;
         initialOrientation = playerModel.transform.rotation;
-        targetRotation = playerModel.transform.rotation;
         facing = FACING.RIGHT;
         transitionTimer = 0;
+        currentForward = playerModel.transform.forward;
+
+        // TO DO : Set target rotation to the maxDegToTheGround if player spawn on a slope > maxDegToTheGround
+        targetRotation = playerModel.transform.rotation;
+        //targetRotation = Quaternion.LookRotation(Quaternion.Euler(0,0,-maxDegToTheGround) * Vector2.right, Vector2.up);
     }
 
     // Start is called before the first frame update
@@ -137,7 +146,10 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Fall();
-        //BalancePosture();
+        if (facing != FACING.TRANSITION)
+        {
+            BalancePosture();
+        }
         if(!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameOver())
         {
             Walk();
@@ -159,6 +171,7 @@ public class PlayerController : MonoBehaviour
             {
                 // turn around
                 facing = FACING.TRANSITION;
+                currentForward = playerModel.transform.forward; // save this for coroutine
                 StartCoroutine(TurnToLeft());
             }
             else if (xInput > 0)
@@ -191,6 +204,7 @@ public class PlayerController : MonoBehaviour
             {
                 // turn around
                 facing = FACING.TRANSITION;
+                currentForward = playerModel.transform.forward; // save this for coroutine
                 StartCoroutine(TurnToRight());
             }
             if (xInput < 0)
@@ -227,7 +241,8 @@ public class PlayerController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.transform.position, -Vector2.up, Mathf.Infinity, groundMask);
             if (hit.collider != null)
             {
-                // Handle animation
+                /* Handle animations */
+
                 if((xInput > 0 && facing == FACING.RIGHT) || (xInput < 0 && facing == FACING.LEFT))
                 {
                     playerAnimator.SetBool("IsWalking", true);
@@ -237,19 +252,32 @@ public class PlayerController : MonoBehaviour
                     playerAnimator.SetBool("IsWalking", false);
                 }
 
-                Vector3 groundNormal = hit.normal;
-                Vector2 groundTangent = -Vector2.Perpendicular(groundNormal); // 90 degrees clockwise
-                velocity = groundTangent.normalized * xSpeed; // Take the sign into account
+                /* Handle speed */
 
-                // Orientation of the model
-                // TO DO : See if the rotation should not happen to the parent itself
+                groundNormal = hit.normal;
+                groundTangent = -Vector2.Perpendicular(groundNormal); // 90 degrees clockwise
                 float angle = Vector3.Angle(Vector2.right, groundTangent);
-                if(angle < maxDegToTheGround)
+                velocity = groundTangent.normalized * xSpeed; // Take the sign into account
+                Debug.Log("Angle of the slope : " + angle);
+
+                /* Handle tilting */
+                // TO DO : See if the rotation should not happen to the parent itself
+                if (angle < maxDegToTheGround)
                 {
-                    targetRotation = Quaternion.LookRotation(groundTangent, Vector2.up);
+                    if (facing == FACING.RIGHT)
+                    {
+                        Debug.Log("Looking at target right : " + targetRotation);
+                        targetRotation = Quaternion.LookRotation(groundTangent, Vector2.up);
+                    }
+                    else if (facing == FACING.LEFT)
+                    {
+                        Debug.Log("Looking at target left : " + targetRotation);
+                        targetRotation = Quaternion.LookRotation(-groundTangent, Vector2.up);
+                    }
                 }
                 else
                 {
+                    Debug.Log("Too slopy, target rotation stays the same " + targetRotation);
                     // 45 degrees orientation
                     // just keep the old target rotation, that will do
                 }
@@ -330,7 +358,7 @@ public class PlayerController : MonoBehaviour
         while(timer < timeToTurn)
         {
             // update 3d model
-            playerModel.transform.rotation = Quaternion.LookRotation(Vector3.Slerp(Vector2.left, Vector2.right, timer / timeToTurn), Vector2.up);
+            playerModel.transform.rotation = Quaternion.LookRotation(Vector3.Slerp(currentForward, -currentForward, timer / timeToTurn), Vector2.Perpendicular(-currentForward));
             //Quaternion.RotateTowards(playerModel.transform.rotation, Vector2.left, 
             
             // update time
@@ -338,6 +366,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         facing = FACING.RIGHT;
+        targetRotation = Quaternion.Euler(-targetRotation.eulerAngles); // Inverse the tilting
 
         playerAnimator.SetBool("IsTurning", false);
     }
@@ -351,7 +380,7 @@ public class PlayerController : MonoBehaviour
         while (timer < timeToTurn)
         {
             // update 3d model
-            playerModel.transform.rotation = Quaternion.LookRotation(Vector3.Slerp(Vector2.right, Vector2.left, timer / timeToTurn), Vector2.up);
+            playerModel.transform.rotation = Quaternion.LookRotation(Vector3.Slerp(currentForward, -currentForward, timer / timeToTurn), Vector2.Perpendicular(currentForward));
             //Quaternion.RotateTowards(playerModel.transform.rotation, Vector2.left, 
 
             // update time
@@ -359,6 +388,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         facing = FACING.LEFT;
+        targetRotation = Quaternion.Euler(-targetRotation.eulerAngles);  // Inverse the tilting
 
         playerAnimator.SetBool("IsTurning", false);
     }
