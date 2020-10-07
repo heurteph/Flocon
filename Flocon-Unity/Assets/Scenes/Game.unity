@@ -542,6 +542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
   ListenerNumber: -1
 --- !u!114 &519420030
 MonoBehaviour:
@@ -1505,13 +1506,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51ba31b6592dfb40b3ff60b6c426c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xMaxSpeed: 3
+  xMaxSpeed: 2.5
   xAcceleration: 1
   xDeceleration: 3
   gravityAcceleration: 0.5
   tiltSpeed: 20
   maxDegToTheGround: 10
   spinSpeed: 10
+  timeToTurn: 0.5
 --- !u!61 &1404024889
 BoxCollider2D:
   m_ObjectHideFlags: 0

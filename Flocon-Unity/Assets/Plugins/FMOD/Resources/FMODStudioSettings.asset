@@ -304,6 +304,8 @@ MonoBehaviour:
   Banks:
   - Ambiance
   - Animaux
+  - Autres
+  - Character
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

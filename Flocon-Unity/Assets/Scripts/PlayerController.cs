@@ -62,6 +62,11 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Speed of the character spinning when the game is over")]
     private float spinSpeed = 20;
 
+    [SerializeField]
+    [Range(0.5f, 5f)]
+    [Tooltip("Time to switch side in seconds")]
+    private float timeToTurn = 0.5f;
+
     private float ySpeed;
 
     private int groundMask;
@@ -112,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         Fall();
         Walk();
-        BalancePosture();
+        //BalancePosture();
         if(GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameOver())
         {
             VictoryRotation();
@@ -126,22 +131,43 @@ public class PlayerController : MonoBehaviour
 
         if (facing == FACING.RIGHT)
         {
+            if(xInput < 0)
+            {
+                // turn around
+                facing = FACING.TRANSITION;
+                StartCoroutine(TurnToLeft());
+            }
+            else if (xInput > 0)
+            {
+                xSpeed = Mathf.Min(xSpeed + xInput * xAcceleration * Time.deltaTime, xMaxSpeed);
+            }
+            else // xInput == 0
+            if (xSpeed > 0)
+            {
+                xSpeed = Mathf.Max(xSpeed - xDeceleration * Time.deltaTime, 0);
+            }
+        }
+        else if (facing == FACING.LEFT)
+        {
+            if(xInput > 0)
+            {
+                // turn around
+                facing = FACING.TRANSITION;
+                StartCoroutine(TurnToRight());
+            }
+            if (xInput < 0)
+            {
+                xSpeed = Mathf.Max(xSpeed + xInput * xAcceleration * Time.deltaTime, -xMaxSpeed);
+            }
+            else // xInput == 0
+            if (xSpeed < 0)
+            {
+                xSpeed = Mathf.Min(xSpeed + xDeceleration * Time.deltaTime, 0);
+            }
+        }
 
-        }
-        if (xInput != 0)
-        {
-            xSpeed = Mathf.Clamp(xSpeed + xInput * xAcceleration * Time.deltaTime, -xMaxSpeed, xMaxSpeed);
-        }
-        else if (xSpeed > 0)
-        {
-            xSpeed = Mathf.Max(xSpeed - xDeceleration * Time.deltaTime, 0);
-        }
-        else if (xSpeed < 0)
-        {
-            xSpeed = Mathf.Min(xSpeed + xDeceleration * Time.deltaTime, 0);
-        }
         Vector2 velocity = new Vector2(xSpeed, 0);
-        Debug.Log("xSpeed : " + xSpeed);
+        //Debug.Log("xSpeed : " + xSpeed);
 
         // Follow the terrain only if on the ground
         if (isGrounded)
@@ -150,11 +176,11 @@ public class PlayerController : MonoBehaviour
             if (hit.collider != null)
             {
                 // Handle animation
-                if(xInput != 0)
+                if((xInput > 0 && facing == FACING.RIGHT) || (xInput < 0 && facing == FACING.LEFT))
                 {
                     playerAnimator.SetBool("IsWalking", true);
                 }
-                else
+                else if(facing != FACING.TRANSITION)
                 {
                     playerAnimator.SetBool("IsWalking", false);
                 }
@@ -191,6 +217,7 @@ public class PlayerController : MonoBehaviour
 
     private void BalancePosture()
     {
+        // Add up every rotations
         float step = tiltSpeed * Time.deltaTime;
         playerModel.transform.rotation = Quaternion.RotateTowards(playerModel.transform.rotation, targetRotation, step);
     }
@@ -240,6 +267,48 @@ public class PlayerController : MonoBehaviour
     public void InitializePosition(Vector2 origin)
     {
         transform.position = origin;
+    }
+
+    private IEnumerator TurnToRight()
+    {
+        // TO DO : Turn back animation ?
+        playerAnimator.SetBool("IsTurning", true);
+
+        float timer = 0;
+        while(timer < timeToTurn)
+        {
+            // update 3d model
+            playerModel.transform.rotation = Quaternion.LookRotation(Vector3.Slerp(Vector2.left, Vector2.right, timer / timeToTurn), Vector2.up);
+            //Quaternion.RotateTowards(playerModel.transform.rotation, Vector2.left, 
+            
+            // update time
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        facing = FACING.RIGHT;
+
+        playerAnimator.SetBool("IsTurning", false);
+    }
+
+    private IEnumerator TurnToLeft()
+    {
+        // TO DO : Turn back animation ?
+        playerAnimator.SetBool("IsTurning", true);
+
+        float timer = 0;
+        while (timer < timeToTurn)
+        {
+            // update 3d model
+            playerModel.transform.rotation = Quaternion.LookRotation(Vector3.Slerp(Vector2.right, Vector2.left, timer / timeToTurn), Vector2.up);
+            //Quaternion.RotateTowards(playerModel.transform.rotation, Vector2.left, 
+
+            // update time
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        facing = FACING.LEFT;
+
+        playerAnimator.SetBool("IsTurning", false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
