@@ -25,9 +25,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{e371ba0f-97be-4b68-afac-5cd41c29e2ba}" />
 	<object class="SFXReverbEffect" id="{8fed5e7e-df74-4792-817b-be9491c4b18b}">
-		<property name="earlyLateMix">
-			<value>43</value>
-		</property>
 		<property name="wetLevel">
 			<value>0</value>
 		</property>
