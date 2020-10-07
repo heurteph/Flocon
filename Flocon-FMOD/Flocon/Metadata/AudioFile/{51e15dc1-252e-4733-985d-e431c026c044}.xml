@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{51e15dc1-252e-4733-985d-e431c026c044}">
+		<property name="assetPath">
+			<value>28-Tom Cat, Individual Meows [2020-10-06 150638].wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.1416780045351476</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94be6338-ee5a-4c40-bfea-8c07387945e6}</destination>
+		</relationship>
+	</object>
+</objects>

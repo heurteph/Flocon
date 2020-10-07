@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="ParameterPreset" id="{948ddcb2-e780-4bf6-8596-3d415e816aa0}">
+		<property name="name">
+			<value>Saisons</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a9763f6f-3f0c-4cca-9bfe-2dd8f3d4104e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{3d67f509-2aaa-464c-9811-b4ef545b40d3}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{3d67f509-2aaa-464c-9811-b4ef545b40d3}">
+		<property name="maximum">
+			<value>200</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
