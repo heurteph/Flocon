@@ -58,8 +58,14 @@ public class GameManager : MonoBehaviour
 
     private void FinishGame()
     {
+        isGameOver = true;
         // TO DO : Display credits
-        Application.Quit();
+        //Application.Quit();
+    }
+
+    public bool IsGameOver()
+    {
+        return isGameOver;
     }
 
     private void PauseGame(InputAction.CallbackContext ctx)
