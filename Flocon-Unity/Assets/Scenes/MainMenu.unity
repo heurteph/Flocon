@@ -1655,7 +1655,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LoadEvent: 1
   UnloadEvent: 0
-  Banks: []
+  Banks:
+  - Animaux
+  - Ambiance
+  - Master
   CollisionTag: 
   PreloadSamples: 0
 --- !u!4 &1713324398
@@ -1685,7 +1688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CollisionTag: 
-  Event: event:/Ambiance
+  Event: event:/Ambiance/Ambiance
   PlayEvent: 1
   StopEvent: 0
   AllowFadeout: 1
@@ -1693,8 +1696,8 @@ MonoBehaviour:
   Preload: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: -1
-  OverrideMaxDistance: -1
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &1725062301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2185,7 +2188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a324f73e01713ca4ab68cbeca573aa87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_blackCanvas: {fileID: 2076142036}
 --- !u!95 &2076142039
 Animator:
   serializedVersion: 3

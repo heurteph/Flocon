@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{8080f48e-2c79-4bc0-9136-934bb822506a}">
+		<property name="assetPath">
+			<value>rollover2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.057324263038548755</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94be6338-ee5a-4c40-bfea-8c07387945e6}</destination>
+		</relationship>
+	</object>
+</objects>

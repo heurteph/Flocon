@@ -1,6 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6804487949693976803
+--- !u!114 &-9171479440339995925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Loup/Respirations_Loup
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Loup/Respirations_Loup
+  guid: 2316f9875010af479beec0e48674d5ba
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 31026
+--- !u!114 &-8413687273151248889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Corbeau/Cri_Corbeau
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Corbeau/Cri_Corbeau
+  guid: c582cd5741f82943bb4b560f3f202a69
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2000
+--- !u!114 &-6331615555512986842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,15 +56,83 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/Master.strings.bank
   m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637376022785246437
+  Path: ../Flocon-FMOD/Flocon/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  lastModified: 637376894376461787
   LoadResult: 0
-  FileSizes: []
+  FileSizes:
+  - Name: Desktop
+    Value: 1648
   Exists: 1
---- !u!114 &-5301743853473415602
+--- !u!114 &-6046567819251357721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Saisons
+  m_EditorClassIdentifier: 
+  Name: Saisons
+  Min: 0
+  Max: 300
+  Default: 0
+  ID:
+    data1: 2230236842
+    data2: 1338283930
+  Exists: 1
+--- !u!114 &-5624042642244821910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Grenouille/Cri_Grenouille
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Grenouille/Cri_Grenouille
+  guid: f80c0f150e0f91478cf71fbcd78691aa
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 3141
+--- !u!114 &-4242565423852051529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Loup/Cri_Loup
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Loup/Cri_Loup
+  guid: 4dc392a2c7d71a49a4a10b01762ce0ba
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &-3521585181579634744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28,15 +142,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/Animaux.bank
   m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637375922373067391
+  Path: ../Flocon-FMOD/Flocon/Build/Desktop/Animaux.bank
+  Name: Animaux
+  lastModified: 637376894376022962
   LoadResult: 0
   FileSizes: []
   Exists: 1
---- !u!114 &-3268859595084570483
+--- !u!114 &-2772716221674559903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,15 +160,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/Ambiance.bank
   m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637376022785246437
+  Path: ../Flocon-FMOD/Flocon/Build/Desktop/Ambiance.bank
+  Name: Ambiance
+  lastModified: 637376894375458015
   LoadResult: 0
   FileSizes: []
   Exists: 1
---- !u!114 &-3204143564422715256
+--- !u!114 &-2305197156467171845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,16 +177,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Chat/Cri_Chat
   m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637376022785246437
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
---- !u!114 &-555935650845615924
+  Path: event:/Animaux/Chat/Cri_Chat
+  guid: c4825b7eb72f374da08d240359b8126f
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 3141
+--- !u!114 &-936290455390038551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,15 +200,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Corbeau/Footsteps_Corbeau
   m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637375922373067391
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
+  Path: event:/Animaux/Corbeau/Footsteps_Corbeau
+  guid: 32b9b13baf0c9047a379f9687de8441f
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &-232815618316394627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/Respiration_Character
+  m_EditorClassIdentifier: 
+  Path: event:/Character/Respiration_Character
+  guid: 12af12fe15d8ee4fb7cb150482470eb5
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,18 +250,34 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 6042074953490890608}
-  - {fileID: -3204143564422715256}
+  - {fileID: -6331615555512986842}
+  - {fileID: -2772716221674559903}
+  - {fileID: -3521585181579634744}
+  - {fileID: 2305756747382085952}
   EditorEvents:
-  - {fileID: 605833590434483052}
-  EditorParameters: []
+  - {fileID: 3788031655639000137}
+  - {fileID: -232815618316394627}
+  - {fileID: -9171479440339995925}
+  - {fileID: -936290455390038551}
+  - {fileID: -4242565423852051529}
+  - {fileID: 4960726000276305577}
+  - {fileID: 4864706509240523954}
+  - {fileID: 5874292610425452851}
+  - {fileID: -2305197156467171845}
+  - {fileID: -8413687273151248889}
+  - {fileID: 3554763858050033259}
+  - {fileID: 5359608626083449321}
+  - {fileID: -5624042642244821910}
+  - {fileID: 6925376184669793179}
+  EditorParameters:
+  - {fileID: -6046567819251357721}
   MasterBanks:
-  - {fileID: -3204143564422715256}
+  - {fileID: 2305756747382085952}
   StringsBanks:
-  - {fileID: 6042074953490890608}
-  stringsBankWriteTime: 637375922373077367
-  cacheVersion: 3
---- !u!114 &239172366189185838
+  - {fileID: -6331615555512986842}
+  stringsBankWriteTime: 637376894376461787
+  cacheVersion: 5
+--- !u!114 &2305756747382085952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,13 +289,151 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
   m_Name: bank:/Master.bank
   m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637375992496140923
+  Path: ../Flocon-FMOD/Flocon/Build/Desktop/Master.bank
+  Name: Master
+  lastModified: 637376894376441845
   LoadResult: 0
   FileSizes: []
   Exists: 1
---- !u!114 &605833590434483052
+--- !u!114 &3554763858050033259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Grenouille/Footsteps_Grenouille
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Grenouille/Footsteps_Grenouille
+  guid: ce87e6be239a3a4c98df0f80442615c3
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &3788031655639000137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambiance/Ambiance
+  m_EditorClassIdentifier: 
+  Path: event:/Ambiance/Ambiance
+  guid: 146b04fe7c49c3498ecffa160139ab17
+  Banks:
+  - {fileID: -2772716221674559903}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 115000
+--- !u!114 &4864706509240523954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Loup/Footsteps_Loup
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Loup/Footsteps_Loup
+  guid: 7e15665a5811e4469b01300c164e603c
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &4960726000276305577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Animaux/Chat/Footsteps_Chat
+  m_EditorClassIdentifier: 
+  Path: event:/Animaux/Chat/Footsteps_Chat
+  guid: 72e5c3d7bfe0fb449cd1a47c14828fee
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &5359608626083449321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/Mecanique_Degele
+  m_EditorClassIdentifier: 
+  Path: event:/Character/Mecanique_Degele
+  guid: e98b65871c822945973ba84d96f7c036
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &5874292610425452851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/Footsteps_Character
+  m_EditorClassIdentifier: 
+  Path: event:/Character/Footsteps_Character
+  guid: ab79bf273dc5d44ca986987bf41bdab5
+  Banks:
+  - {fileID: -3521585181579634744}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 256
+--- !u!114 &6925376184669793179
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,88 +446,13 @@ MonoBehaviour:
   m_Name: event:/UI_Clicked
   m_EditorClassIdentifier: 
   Path: event:/UI_Clicked
-  guid: 322ac65b40c8aa41ad4582f28d633da2
+  guid: 450372cc196e8b43a69ddbfbb54c8983
   Banks:
-  - {fileID: -6804487949693976803}
-  - {fileID: -3204143564422715256}
+  - {fileID: 2305756747382085952}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 40
---- !u!114 &2053596366868736380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
-  m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637375992372988424
-  LoadResult: 0
-  FileSizes: []
-  Exists: 0
---- !u!114 &2600282385886261945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
-  m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637375888651617607
-  LoadResult: 0
-  FileSizes: []
-  Exists: 0
---- !u!114 &3632355722216196519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
-  m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637375992496140923
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
---- !u!114 &6042074953490890608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.strings.bank
-  m_EditorClassIdentifier: 
-  Path: ../Flocon-FMOD/artgames_fmod/Build/Desktop/Master.strings.bank
-  SubDir: 
-  lastModified: 637375922373077367
-  LoadResult: 0
-  FileSizes:
-  - Name: Desktop
-    Value: 736
-  Exists: 1
+  Length: 0
