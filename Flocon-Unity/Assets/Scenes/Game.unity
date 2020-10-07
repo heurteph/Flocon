@@ -1507,8 +1507,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xMaxSpeed: 2.5
-  xAcceleration: 1
+  xMinSpeed: 0.5
+  xAcceleration: 2
   xDeceleration: 3
+  maxWalkToIdleAnimationTransitionDuration: 1
   gravityAcceleration: 0.5
   tiltSpeed: 20
   maxDegToTheGround: 10

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public enum FACING { RIGHT, LEFT, TRANSITION}
@@ -27,6 +28,12 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Walking max speed")]
     private float xMaxSpeed = 3;
 
+
+    [SerializeField]
+    [Range(0.01f, 10f)]
+    [Tooltip("Walking min speed")]
+    private float xMinSpeed = 0.2f;
+
     private float xSpeed;
 
     [SerializeField]
@@ -38,6 +45,11 @@ public class PlayerController : MonoBehaviour
     [Range(0.01f, 10f)]
     [Tooltip("Walking deceleration")]
     private float xDeceleration = 4;
+
+    [SerializeField]
+    [Range(0.5f, 2f)]
+    [Tooltip("Walk -> Idle animation transition duration when character is at full speed")]
+    private float maxWalkToIdleAnimationTransitionDuration = 1;
 
     [SerializeField]
     [Range(0f,10f)]
@@ -82,6 +94,12 @@ public class PlayerController : MonoBehaviour
     public delegate void EndLevelHandler();
     public event EndLevelHandler EndLevelEvent;
 
+    /* Animations */
+
+    private int walkStateId;
+    private int walkTransitionToIdleId;
+    private float transitionTimer;
+
     private void Awake()
     {
         raycastOrigin = transform.GetChild(0).gameObject;
@@ -103,6 +121,7 @@ public class PlayerController : MonoBehaviour
         initialOrientation = playerModel.transform.rotation;
         targetRotation = playerModel.transform.rotation;
         facing = FACING.RIGHT;
+        transitionTimer = 0;
     }
 
     // Start is called before the first frame update
@@ -110,15 +129,20 @@ public class PlayerController : MonoBehaviour
     {
         inputsManager = GameObject.FindGameObjectWithTag("InputsManager");
         Debug.Assert(inputsManager != null, "Missing inputs manager");
+
+        GetStateMachineIds("marche", "idle", out walkStateId, out walkTransitionToIdleId);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Fall();
-        Walk();
         //BalancePosture();
-        if(GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameOver())
+        if(!GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameOver())
+        {
+            Walk();
+        }
+        else
         {
             VictoryRotation();
         }
@@ -131,7 +155,7 @@ public class PlayerController : MonoBehaviour
 
         if (facing == FACING.RIGHT)
         {
-            if(xInput < 0)
+            if(xInput < 0 && xSpeed == 0)
             {
                 // turn around
                 facing = FACING.TRANSITION;
@@ -139,17 +163,31 @@ public class PlayerController : MonoBehaviour
             }
             else if (xInput > 0)
             {
+                // moving forward
+                if (xSpeed == 0) xSpeed = xMinSpeed;
                 xSpeed = Mathf.Min(xSpeed + xInput * xAcceleration * Time.deltaTime, xMaxSpeed);
+
+                /*
+                // The transition duration of walk->idle is the mirror of time elapsed on idle->walk
+                transitionTimer = Mathf.Min(transitionTimer + Time.deltaTime, maxWalkToIdleAnimationTransitionDuration);
+                // change transition duration with threshold not to burn the CPU
+                if ((int)(transitionTimer * 1000) % (maxWalkToIdleAnimationTransitionDuration * 1000 / 4) == 0)
+                {
+                    ChangeTransitionDuration(walkStateId, walkTransitionToIdleId, transitionTimer);
+                }
+                */
             }
             else // xInput == 0
             if (xSpeed > 0)
             {
-                xSpeed = Mathf.Max(xSpeed - xDeceleration * Time.deltaTime, 0);
+                // stopping
+                transitionTimer = 0;
+                xSpeed = Mathf.Max(xSpeed - xDeceleration * Time.deltaTime /** xSpeed*/, 0);
             }
         }
         else if (facing == FACING.LEFT)
         {
-            if(xInput > 0)
+            if(xInput > 0 && xSpeed == 0)
             {
                 // turn around
                 facing = FACING.TRANSITION;
@@ -157,12 +195,26 @@ public class PlayerController : MonoBehaviour
             }
             if (xInput < 0)
             {
+                // moving forward
+                if (xSpeed == 0) xSpeed = -xMinSpeed;
                 xSpeed = Mathf.Max(xSpeed + xInput * xAcceleration * Time.deltaTime, -xMaxSpeed);
+
+                /*
+                // The transition duration of walk->idle is the mirror of time elapsed on idle->walk
+                transitionTimer = Mathf.Min(transitionTimer + Time.deltaTime, maxWalkToIdleAnimationTransitionDuration);
+                // change transition duration with threshold not to burn the CPU
+                if ((int)(transitionTimer * 1000) % (maxWalkToIdleAnimationTransitionDuration * 1000 / 4) == 0)
+                {
+                    ChangeTransitionDuration(walkStateId, walkTransitionToIdleId, transitionTimer);
+                }
+                */
             }
             else // xInput == 0
             if (xSpeed < 0)
             {
-                xSpeed = Mathf.Min(xSpeed + xDeceleration * Time.deltaTime, 0);
+                // stopping
+                transitionTimer = 0;
+                xSpeed = Mathf.Min(xSpeed + xDeceleration * Time.deltaTime /** -xSpeed*/, 0);
             }
         }
 
@@ -309,6 +361,51 @@ public class PlayerController : MonoBehaviour
         facing = FACING.LEFT;
 
         playerAnimator.SetBool("IsTurning", false);
+    }
+
+    private void GetStateMachineIds(string stateFrom, string stateTo, out int stateId, out int transitionId)
+    {
+
+        // Get a reference to the Animator Controller:
+        AnimatorController ac = playerAnimator.runtimeAnimatorController as AnimatorController;
+        //This part is IMPORTANT ^^
+
+        // Number of layers:
+        int layerCount = ac.layers.Length;
+        Debug.Log(string.Format("Layer Count: {0}", layerCount));
+
+        // Names of each layer:
+        for (int layer = 0; layer < layerCount; layer++)
+        {
+            Debug.Log(string.Format("Layer {0}: {1}", layer, ac.layers[layer].name));
+        }
+
+        // States on layer 0:
+        AnimatorStateMachine sm = ac.layers[0].stateMachine;
+        ChildAnimatorState[] states = sm.states;
+        stateId = 0;
+        foreach (ChildAnimatorState s in states)
+        {
+            Debug.Log(string.Format("State: {0}", s.state.name));
+            if (s.state.name == stateFrom)
+                break;
+            stateId++;
+        }
+
+        transitionId = 0;
+        foreach (AnimatorStateTransition t in states[stateId].state.transitions)
+        {
+            Debug.Log(string.Format("Transition to : {0}", t.destinationState.name));
+            if (t.destinationState.name == stateTo)
+                break;
+            transitionId++;
+        }
+    }
+
+    private void ChangeTransitionDuration(int stateId, int transitionId, float duration)
+    {
+        AnimatorController ac = playerAnimator.runtimeAnimatorController as AnimatorController;
+        ac.layers[0].stateMachine.states[stateId].state.transitions[transitionId].duration = duration;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
