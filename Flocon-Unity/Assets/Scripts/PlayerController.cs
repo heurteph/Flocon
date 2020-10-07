@@ -11,23 +11,64 @@ public class PlayerController : MonoBehaviour
     private GameObject raycastOrigin;
     //private GameObject feetLevel;
 
+    private GameObject playerModel;
+
+    private Animator playerAnimator;
+
     /* Settings */
+
+    [Space]
+    [Header("Linear Physics")]
 
     [SerializeField]
     [Range(0.01f,10f)]
-    [Tooltip("Player speed")]
-    private float xSpeed = 5;
+    [Tooltip("Walking max speed")]
+    private float xMaxSpeed = 3;
+
+    private float xSpeed;
+
+    [SerializeField]
+    [Range(0.01f, 10f)]
+    [Tooltip("Walking acceleration")]
+    private float xAcceleration = 1;
+
+    [SerializeField]
+    [Range(0.01f, 10f)]
+    [Tooltip("Walking deceleration")]
+    private float xDeceleration = 4;
 
     [SerializeField]
     [Range(0f,10f)]
     [Tooltip("The gravitational acceleration applied to the player")]
     private float gravityAcceleration = 0.5f;
 
+    [Space]
+    [Header("Rotations")]
+
+    [SerializeField]
+    [Range(10f, 100f)]
+    [Tooltip("Speed to adapt posture to the ground")]
+    private float tiltSpeed = 50;
+
+    [SerializeField]
+    [Range(0f, 90f)]
+    [Tooltip("The maximum slope angle the character can adapt its posture to")]
+    private float maxDegToTheGround = 45;
+
+    [SerializeField]
+    [Range(0f, 90f)]
+    [Tooltip("Speed of the character spinning when the game is over")]
+    private float spinSpeed = 20;
+
     private float ySpeed;
 
     private int groundMask;
 
     private bool isGrounded;
+
+    private Quaternion initialOrientation;
+
+    private Quaternion targetRotation;
 
     public delegate void EndLevelHandler();
     public event EndLevelHandler EndLevelEvent;
@@ -40,10 +81,18 @@ public class PlayerController : MonoBehaviour
         //feetLevel = transform.GetChild(1).gameObject;
         //Debug.Assert(feetLevel != null, "No point found for the ground level");
 
+        playerModel = transform.GetChild(1).gameObject;
+        Debug.Assert(playerModel != null, "No 3D model found for the player");
+        playerAnimator = playerModel.GetComponent<Animator>();
+        Debug.Assert(playerModel != null, "No Animator found for the player");
+
         groundMask = LayerMask.GetMask("Ground");
 
+        xSpeed = 0;
         ySpeed = 0;
         isGrounded = false;
+        initialOrientation = playerModel.transform.rotation;
+        targetRotation = playerModel.transform.rotation;
     }
 
     // Start is called before the first frame update
@@ -54,17 +103,36 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Fall();
         Walk();
+        BalancePosture();
+        if(GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IsGameOver())
+        {
+            VictoryRotation();
+        }
     }
 
     private void Walk()
     {
         // Get inputs
         float xInput = inputsManager.GetComponent<InputsManager>().ReadWalk();
-        Vector2 velocity = new Vector2(xInput, 0);
+
+        if (xInput != 0)
+        {
+            xSpeed = Mathf.Clamp(xSpeed + xInput * xAcceleration * Time.deltaTime, -xMaxSpeed, xMaxSpeed);
+        }
+        else if (xSpeed > 0)
+        {
+            xSpeed = Mathf.Max(xSpeed - xDeceleration * Time.deltaTime, 0);
+        }
+        else if (xSpeed < 0)
+        {
+            xSpeed = Mathf.Min(xSpeed + xDeceleration * Time.deltaTime, 0);
+        }
+        Vector2 velocity = new Vector2(xSpeed, 0);
+        Debug.Log("xSpeed : " + xSpeed);
 
         // Follow the terrain only if on the ground
         if (isGrounded)
@@ -72,13 +140,55 @@ public class PlayerController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.transform.position, -Vector2.up, Mathf.Infinity, groundMask);
             if (hit.collider != null)
             {
+                // Handle animation
+                if(xInput != 0)
+                {
+                    playerAnimator.SetBool("IsWalking", true);
+                }
+                else
+                {
+                    playerAnimator.SetBool("IsWalking", false);
+                }
+
                 Vector3 groundNormal = hit.normal;
                 Vector2 groundTangent = -Vector2.Perpendicular(groundNormal); // 90 degrees clockwise
-                velocity = groundTangent.normalized * xInput; // Take the sign into account
+                velocity = groundTangent.normalized * xSpeed; // Take the sign into account
+
+                // Orientation of the model
+                // TO DO : See if the rotation should not happen to the parent itself
+                float angle = Vector3.Angle(Vector2.right, groundTangent);
+                if(angle < maxDegToTheGround)
+                {
+                    targetRotation = Quaternion.LookRotation(groundTangent, Vector2.up);
+                }
+                else
+                {
+                    // 45 degrees orientation
+                    // just keep the old target rotation, that will do
+                }
+            }
+            else // in the void
+            {
+                playerAnimator.SetBool("IsWalking", false);
             }
         }
+        else // in the air
+        {
+            //playerAnimator.SetBool("IsWalking", false);
+        }
 
-        transform.Translate(velocity * xSpeed * Time.deltaTime, Space.World);
+        transform.Translate(velocity * Time.deltaTime, Space.World);
+    }
+
+    private void BalancePosture()
+    {
+        float step = tiltSpeed * Time.deltaTime;
+        playerModel.transform.rotation = Quaternion.RotateTowards(playerModel.transform.rotation, targetRotation, step);
+    }
+
+    private void VictoryRotation()
+    {
+        playerModel.transform.Rotate(Vector2.up, spinSpeed);
     }
 
     private void Fall()
@@ -127,6 +237,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("FinishPosition"))
         {
+            playerAnimator.SetBool("IsFinish", true);
             EndLevelEvent();
         }
     }

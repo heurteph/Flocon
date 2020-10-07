@@ -9,6 +9,7 @@ TagManager:
   - MenuManager
   - StartPosition
   - FinishPosition
+  - Model
   layers:
   - Default
   - TransparentFX

@@ -441,6 +441,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: model seul tout
       objectReference: {fileID: 0}
+    - target: {fileID: 6065894367101055641, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
+      propertyPath: m_TagString
+      value: Model
+      objectReference: {fileID: 0}
     - target: {fileID: 6759947574480685070, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -459,7 +463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094641733191794826, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7094641733191794826, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_LocalRotation.y
@@ -467,7 +471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094641733191794826, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7094641733191794826, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -475,7 +479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094641733191794826, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7094641733191794826, guid: d2979e0abd213734ea2a22305d3a4b2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1462,8 +1466,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 24964545}
-  - {fileID: 1539773004}
   - {fileID: 1638751580}
+  - {fileID: 1539773004}
   - {fileID: 877386257}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -1501,8 +1505,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51ba31b6592dfb40b3ff60b6c426c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSpeed: 10
+  xMaxSpeed: 3
+  xAcceleration: 1
+  xDeceleration: 3
   gravityAcceleration: 0.5
+  tiltSpeed: 20
+  maxDegToTheGround: 10
+  spinSpeed: 10
 --- !u!61 &1404024889
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1600,7 +1609,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1404024886}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1618945506
 GameObject:
