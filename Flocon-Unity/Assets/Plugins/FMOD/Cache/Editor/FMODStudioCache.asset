@@ -106,8 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Jizo_Mouvementfeuille
   guid: ab1d75dbbffbce4d9ea7843331e3256c
-  Banks:
-  - {fileID: 5107786323465584424}
+  Banks: []
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -161,6 +160,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 2000
+--- !u!114 &-4262765291946602026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Resolution enigme
+  m_EditorClassIdentifier: 
+  Path: event:/Resolution enigme
+  guid: bc84dc2d01f6f34e89ca70c4ddd41a56
+  Banks:
+  - {fileID: 5107786323465584424}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1375
 --- !u!114 &-4241444258679238410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/Flocon/Build/Desktop/Character.bank
   Name: Character
-  lastModified: 637377733621003935
+  lastModified: 637377810067295061
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -276,19 +298,44 @@ MonoBehaviour:
   - {fileID: -4681726603372073922}
   - {fileID: 5735814280612037265}
   - {fileID: 4285971377925074474}
-  - {fileID: -6064775206321348017}
   - {fileID: -4241444258679238410}
   - {fileID: -6963584043306350325}
   - {fileID: 6893103725110060175}
   - {fileID: -8902563528597748108}
+  - {fileID: 121396729742714551}
+  - {fileID: 2622621884270631241}
+  - {fileID: -4262765291946602026}
   EditorParameters:
   - {fileID: -3688517007325939604}
   MasterBanks:
   - {fileID: 2999401788324000921}
   StringsBanks:
   - {fileID: 260530587621683206}
-  stringsBankWriteTime: 637377733621276763
+  stringsBankWriteTime: 637377810067582903
   cacheVersion: 5
+--- !u!114 &121396729742714551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/JIZOinteraction
+  m_EditorClassIdentifier: 
+  Path: event:/JIZOinteraction
+  guid: 8d40ddcd41d6234383cffa5b85d72dfc
+  Banks:
+  - {fileID: 5107786323465584424}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1106
 --- !u!114 &260530587621683206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,11 +350,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/Flocon/Build/Desktop/Master.strings.bank
   Name: Master.strings
-  lastModified: 637377733621276763
+  lastModified: 637377810067582903
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1950
+    Value: 2052
   Exists: 1
 --- !u!114 &1043972342242250157
 MonoBehaviour:
@@ -346,7 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/Flocon/Build/Desktop/Animaux.bank
   Name: Animaux
-  lastModified: 637377733620096279
+  lastModified: 637377810064185144
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -372,7 +419,30 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 115000
+  Length: 93500
+--- !u!114 &2622621884270631241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/JIZO_Mouvementfeuille
+  m_EditorClassIdentifier: 
+  Path: event:/JIZO_Mouvementfeuille
+  guid: ab1d75dbbffbce4d9ea7843331e3256c
+  Banks:
+  - {fileID: 5107786323465584424}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2000
 --- !u!114 &2999401788324000921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,7 +457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/Flocon/Build/Desktop/Master.bank
   Name: Master
-  lastModified: 637377733621232100
+  lastModified: 637377810067523223
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -428,7 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/Flocon/Build/Desktop/Autres.bank
   Name: Autres
-  lastModified: 637377733620374018
+  lastModified: 637377810066789142
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -515,7 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: ../Flocon-FMOD/Flocon/Build/Desktop/Ambiance.bank
   Name: Ambiance
-  lastModified: 637377733618995165
+  lastModified: 637377810063198104
   LoadResult: 0
   FileSizes: []
   Exists: 1
