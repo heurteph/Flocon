@@ -10,6 +10,11 @@ TagManager:
   - StartPosition
   - FinishPosition
   - Model
+  - Plan1
+  - Plan2
+  - Plan3
+  - Plan4
+  - Plan5
   layers:
   - Default
   - TransparentFX
