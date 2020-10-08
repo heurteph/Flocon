@@ -1,0 +1,298 @@
+fileFormatVersion: 2
+guid: dd634c2d2afac464b87f2f0a355ddf36
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7518466636579726032
+    second: Jizo1_0
+  - first:
+      213: 7466032431824982436
+    second: Jizo1_1
+  - first:
+      213: 5408141440843262719
+    second: Jizo1_2
+  - first:
+      213: 6792512315681645284
+    second: Jizo1_3
+  - first:
+      213: -4968809012931859946
+    second: Jizo1_4
+  - first:
+      213: -9046807520064259021
+    second: Jizo1_5
+  - first:
+      213: -6754776209410227240
+    second: Jizo1_6
+  - first:
+      213: -3563745897859187816
+    second: Jizo1_7
+  - first:
+      213: 1241405872773368467
+    second: Jizo1_8
+  - first:
+      213: 5649449047171664985
+    second: Jizo1_9
+  - first:
+      213: -7090048121734043153
+    second: Jizo1_10
+  - first:
+      213: 283608806737918884
+    second: Jizo1_0
+  - first:
+      213: -3554205104299173530
+    second: Jizo1_1
+  - first:
+      213: 7425366454705890634
+    second: Jizo1_2
+  - first:
+      213: 7825337435340556564
+    second: Jizo1_3
+  - first:
+      213: -664821455071669247
+    second: Jizo1_4
+  - first:
+      213: 8820857769515024167
+    second: Jizo1_5
+  - first:
+      213: -8962353547161813164
+    second: Jizo1_6
+  - first:
+      213: 7211529233274954361
+    second: Jizo1_7
+  - first:
+      213: -8103911203066190757
+    second: Jizo1_8
+  - first:
+      213: 3886580133690339581
+    second: Jizo1_9
+  - first:
+      213: -5563433634365839997
+    second: Jizo1_10
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jizo1_0
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 1315
+        width: 979
+        height: 1063
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ab39c405b49fe300800000000000000
+      internalID: 283608806737918884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jizo1_2
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 1296
+        width: 978
+        height: 1056
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a45a8d303733c0760800000000000000
+      internalID: 7425366454705890634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jizo1_3
+      rect:
+        serializedVersion: 2
+        x: 2202
+        y: 1273
+        width: 997
+        height: 1067
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4194a01efee299c60800000000000000
+      internalID: 7825337435340556564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jizo1_8
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 162
+        width: 1057
+        height: 1070
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b546ee972bf198f80800000000000000
+      internalID: -8103911203066190757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jizo1_9
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 142
+        width: 1099
+        height: 1075
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df0f3b32a08efe530800000000000000
+      internalID: 3886580133690339581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jizo1_10
+      rect:
+        serializedVersion: 2
+        x: 2322
+        y: 112
+        width: 1118
+        height: 1076
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 385e92cf596bac2b0800000000000000
+      internalID: -5563433634365839997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

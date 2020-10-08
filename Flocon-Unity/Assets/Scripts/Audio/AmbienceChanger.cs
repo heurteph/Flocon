@@ -24,7 +24,7 @@ public class AmbienceChanger : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.tag == "Player")
         {
@@ -38,5 +38,7 @@ public class AmbienceChanger : MonoBehaviour
                 FMODUnity.RuntimeManager.PlayOneShot(m_eventName);
             }
         }
+
+        Debug.Log("Triggered");
     }
 }

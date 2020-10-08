@@ -68,7 +68,11 @@ fmod.log
 fmod_editor.log
 
 # FMOD studio (In folder FMOD)
-/FMOD/.user
-/FMOD/.unsaved
-/FMOD/.cache
-/FMOD/.restore
+/Flocon-FMOD/Flocon/.user
+/Flocon-FMOD/Flocon/.unsaved
+/Flocon-FMOD/Flocon/.cache
+/Flocon-FMOD/Flocon/.restore
+/Flocon-FMOD/artgames_fmod/.user
+/Flocon-FMOD/artgames_fmod/.unsaved
+/Flocon-FMOD/artgames_fmod/.cache
+/Flocon-FMOD/artgames_fmod/.restore

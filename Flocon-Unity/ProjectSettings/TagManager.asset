@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - InputsManager
+  - GameManager
+  - MenuManager
+  - StartPosition
+  - FinishPosition
+  - Model
+  - Plan1
+  - Plan2
+  - Plan3
+  - Plan4
+  - Plan5
   layers:
   - Default
   - TransparentFX
@@ -13,7 +24,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Ground
   - 
   - 
   - 

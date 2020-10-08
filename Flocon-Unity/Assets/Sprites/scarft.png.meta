@@ -1,0 +1,340 @@
+fileFormatVersion: 2
+guid: baedc205eb87c904b9aa6ea8067110a7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1971131752849083019
+    second: scarft_0
+  - first:
+      213: -6179272221331216176
+    second: scarft_1
+  - first:
+      213: -7861009024784165161
+    second: scarft_2
+  - first:
+      213: 5656278983008613415
+    second: scarft_3
+  - first:
+      213: 6137051653433482276
+    second: scarft_4
+  - first:
+      213: -3392811673978641717
+    second: scarft_5
+  - first:
+      213: -7332179767549302646
+    second: scarft_6
+  - first:
+      213: -2126612951971347668
+    second: scarft_7
+  - first:
+      213: 728805493068184920
+    second: scarft_8
+  - first:
+      213: 7044383448864725383
+    second: scarft_9
+  - first:
+      213: -1740173329431803256
+    second: scarft_10
+  - first:
+      213: 2855336390668550668
+    second: scarft_11
+  - first:
+      213: -3800112639659379526
+    second: scarft_12
+  - first:
+      213: 8763488269660675332
+    second: scarft_13
+  - first:
+      213: -614890094397958352
+    second: scarft_14
+  - first:
+      213: -2984343502729440749
+    second: scarft_15
+  - first:
+      213: 8863986174090335952
+    second: scarft_16
+  - first:
+      213: 3817300454091891235
+    second: scarft_17
+  - first:
+      213: -3400701728156958569
+    second: scarft_18
+  - first:
+      213: -5549839400568078968
+    second: scarft_19
+  - first:
+      213: 9043312743448997506
+    second: scarft_20
+  - first:
+      213: -3317238242727139877
+    second: scarft_21
+  - first:
+      213: -1239037860752958520
+    second: scarft_22
+  - first:
+      213: 3844572227872746319
+    second: scarft_23
+  - first:
+      213: 507476610623790576
+    second: scarft_24
+  - first:
+      213: 4333838066891524388
+    second: scarft_25
+  - first:
+      213: -6229908833242376967
+    second: scarft_26
+  - first:
+      213: -3034735037073917851
+    second: scarft_27
+  - first:
+      213: -1373897136455162411
+    second: scarft_28
+  - first:
+      213: 9085858269873660168
+    second: scarft_29
+  - first:
+      213: 3060589562749395910
+    second: scarft_30
+  - first:
+      213: -6840094485346077969
+    second: scarft_31
+  - first:
+      213: -4795755692479491946
+    second: scarft_32
+  - first:
+      213: 6841162930025800355
+    second: scarft_33
+  - first:
+      213: -573095312146898917
+    second: scarft_34
+  - first:
+      213: -2557559470534607114
+    second: scarft_35
+  - first:
+      213: 6448713332742002131
+    second: scarft_36
+  - first:
+      213: -979252217413726895
+    second: scarft_37
+  - first:
+      213: -3287244424891503839
+    second: scarft_38
+  - first:
+      213: 2839317618139985284
+    second: scarft_39
+  - first:
+      213: 8935571836867585307
+    second: scarft_40
+  - first:
+      213: -8166842578207854285
+    second: scarft_41
+  - first:
+      213: -4121412219022388039
+    second: scarft_42
+  - first:
+      213: -7162119925940717110
+    second: scarft_43
+  - first:
+      213: 2192459516436722169
+    second: scarft_44
+  - first:
+      213: 8148372505536600448
+    second: scarft_45
+  - first:
+      213: -4913126274554479920
+    second: scarft_46
+  - first:
+      213: 7328359726436749772
+    second: scarft_47
+  - first:
+      213: -3749336805531680239
+    second: scarft_48
+  - first:
+      213: 2164618267445209049
+    second: scarft_49
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: scarft_2
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 1854
+        width: 2035
+        height: 548
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d6999df0f518e290800000000000000
+      internalID: -7861009024784165161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scarft_16
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 1232
+        width: 2143
+        height: 603
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d6d0a04674330b70800000000000000
+      internalID: 8863986174090335952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scarft_29
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 647
+        width: 2334
+        height: 578
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8016d5f15f3771e70800000000000000
+      internalID: 9085858269873660168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scarft_38
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 27
+        width: 2405
+        height: 588
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12b6574bc9c5162d0800000000000000
+      internalID: -3287244424891503839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
