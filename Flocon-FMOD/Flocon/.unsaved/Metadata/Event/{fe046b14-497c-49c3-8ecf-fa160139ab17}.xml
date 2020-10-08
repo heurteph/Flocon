@@ -1376,7 +1376,7 @@
 	<object class="MixerBusEffectChain" id="{6d6aac1e-6ff7-4f00-8c96-7f935e66507e}">
 		<relationship name="effects">
 			<destination>{8cd98fa1-35af-47cf-8ad4-5cabba626047}</destination>
-			<destination>{b6e9e130-9b47-42bc-956a-35e0e9e8a6f2}</destination>
+			<destination>{81e9c1b2-3639-4531-8c4f-01744260ef46}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{36bbe530-e01f-4f18-b511-994323b51191}" />
@@ -2451,10 +2451,10 @@
 	<object class="MixerBusFader" id="{7ee79158-7630-4746-8494-bfebdefac188}" />
 	<object class="ThreeEQEffect" id="{9da38c33-71c0-4249-81bf-5070a8b73e62}">
 		<property name="midGain">
-			<value>-8.5</value>
+			<value>-15</value>
 		</property>
 		<property name="highGain">
-			<value>-10.5</value>
+			<value>-17.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{901ddd05-ebe7-4511-9f2c-ed60fa3c05f1}">
@@ -2583,9 +2583,9 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{8cd98fa1-35af-47cf-8ad4-5cabba626047}" />
-	<object class="ThreeEQEffect" id="{b6e9e130-9b47-42bc-956a-35e0e9e8a6f2}">
+	<object class="ThreeEQEffect" id="{81e9c1b2-3639-4531-8c4f-01744260ef46}">
 		<property name="highGain">
-			<value>-13.5</value>
+			<value>-5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{d30a2eb6-8131-47fc-9e45-e915b0bca06d}">
@@ -3481,7 +3481,7 @@
 			<value>199.26108374384236</value>
 		</property>
 		<property name="value">
-			<value>-5.0999999</value>
+			<value>-4.24876881</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{f69a6788-d982-4059-b2f6-8c4d2904d103}">
@@ -3489,7 +3489,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-58.3333321</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{6520effa-0176-4913-b6eb-ca4cb2c76925}">
@@ -3497,7 +3497,7 @@
 			<value>98.768472906403943</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-58.3333321</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{177961d5-6567-43f7-b1f4-4cba44a7ef69}">
@@ -3505,7 +3505,7 @@
 			<value>300</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-58.3333321</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{c41d09de-45d7-462f-98c8-ffe825ed78fa}">
