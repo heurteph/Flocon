@@ -8,6 +8,7 @@ public class JizoInteractionManager : MonoBehaviour
     private TextMeshPro textMesh;
 
     public GameObject bulle;
+    bool enigmeDone = false;
 
     private string msg = "CECI EST UN MESSAGE DE LA PLUS HAUTE IMPORTANCE";
 
@@ -46,6 +47,7 @@ public class JizoInteractionManager : MonoBehaviour
     {
         textMesh = GetComponentInChildren<TextMeshPro>(true);
         Debug.Assert(textMesh != null, "No TextMeshPro found");
+        enigmeDone = false;
     }
 
     // Update is called once per frame
@@ -130,6 +132,13 @@ public class JizoInteractionManager : MonoBehaviour
     {
         if(collider.tag == "Player")
         {
+            bulle.SetActive(false);
+            if(!enigmeDone)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Resolution enigme");
+                enigmeDone = true;
+            }
+            
             textMesh.text = "";
             bulle.GetComponent<Animation>().Play("Dissapear");
             //bulle.SetActive(false);
