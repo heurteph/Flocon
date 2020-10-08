@@ -16,6 +16,11 @@ TagManager:
   - Plan4
   - Plan5
   - Wall
+  - Hair
+  - Winter
+  - Fall
+  - Summer
+  - Spring
   layers:
   - Default
   - TransparentFX

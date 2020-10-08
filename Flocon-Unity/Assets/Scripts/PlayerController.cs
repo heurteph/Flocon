@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
         Debug.Assert(playerModel != null, "No Animator found for the player");
 
         groundMask = LayerMask.GetMask("Ground");
-        wallMask = LayerMask.GetMask("Wall");
+        wallMask = ~LayerMask.GetMask("Wall");
 
         xSpeed = 0;
         ySpeed = 0;
@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Walk();
+            //Walk();
             VictoryRotation();
         }
     }
@@ -178,8 +178,7 @@ public class PlayerController : MonoBehaviour
         if (facing == FACING.RIGHT)
         {
             // Can walk
-            /*
-            if(Physics.Raycast(raycastOrigin.transform.position, Vector2.right, out hitWall, Mathf.Infinity, wallMask))
+            if(Physics.Raycast(raycastOrigin.transform.position, Vector2.right, out hitWall, 2, wallMask))
             {
                 Debug.Log("Wall collision");
                 canMoveForward = false;
@@ -187,9 +186,14 @@ public class PlayerController : MonoBehaviour
             else
             {
                 canMoveForward = true;
-            }*/
+            }
 
-            if (xInput < 0 && xSpeed == 0)
+            if (!canMoveForward)
+            {
+                xSpeed = 0;
+            }
+
+            if (xInput < 0 && xSpeed == 0 && !GetComponent<SeasonColor>().IsRotating())
             {
                 // turn around
                 facing = FACING.TRANSITION;
@@ -222,8 +226,9 @@ public class PlayerController : MonoBehaviour
         }
         else if (facing == FACING.LEFT)
         {
-            /*
-            if (Physics.Raycast(raycastOrigin.transform.position, Vector2.left, out hitWall, Mathf.Infinity, wallMask))
+
+            Debug.DrawRay(raycastOrigin.transform.position, Vector2.left, Color.red, 5);
+            if (Physics.Raycast(raycastOrigin.transform.position, Vector2.left, out hitWall, 2, wallMask))
             {
                 Debug.Log("Wall collision");
                 canMoveForward = false;
@@ -231,9 +236,14 @@ public class PlayerController : MonoBehaviour
             else
             {
                 canMoveForward = true;
-            }*/
+            }
 
-            if (xInput > 0 && xSpeed == 0)
+            if(!canMoveForward)
+            {
+                xSpeed = 0;
+            }
+
+            if (xInput > 0 && xSpeed == 0 && !GetComponent<SeasonColor>().IsRotating())
             {
                 // turn around
                 facing = FACING.TRANSITION;

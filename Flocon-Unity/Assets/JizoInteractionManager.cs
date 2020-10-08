@@ -10,7 +10,7 @@ public class JizoInteractionManager : MonoBehaviour
     public GameObject bulle;
     bool enigmeDone = false;
 
-    private string msg = "CECI EST UN MESSAGE DE LA PLUS HAUTE IMPORTANCE";
+    private string msg = "CECI EST UN MESSAGE DE LA PLUS HAUTE IMPORTANCE FSFFQSFSDFSFSDGGGGQFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf";
 
     [Space]
     [Header("Message Animation Options")]
@@ -40,6 +40,10 @@ public class JizoInteractionManager : MonoBehaviour
     [Range(0f, 2f)]
     private float longPauseDuration = 0.35f;
 
+    private bool isSpeaking;
+
+    private bool isPlayerHere;
+
     public delegate void MessageShownHandler();
     public event MessageShownHandler MessageShownEvent;
 
@@ -48,6 +52,8 @@ public class JizoInteractionManager : MonoBehaviour
         textMesh = GetComponentInChildren<TextMeshPro>(true);
         Debug.Assert(textMesh != null, "No TextMeshPro found");
         enigmeDone = false;
+        isSpeaking = false;
+        isPlayerHere = false;
     }
 
     // Update is called once per frame
@@ -69,6 +75,7 @@ public class JizoInteractionManager : MonoBehaviour
     IEnumerator RevealLetterByLetter(string text)
     {
         //inputs.Player.SkipDialog.performed += SkipDialog;
+        isSpeaking = true;
 
         textMesh.text = text;
         textMesh.maxVisibleCharacters = 0;
@@ -114,17 +121,28 @@ public class JizoInteractionManager : MonoBehaviour
         // Erase message before next event, maybe in some case it could stay
         //textMesh.text = "";
 
+        yield return new WaitForSeconds(postMessageDuration);
+
         //MessageShownEvent();
+        isSpeaking = false;
+
+        if(!isPlayerHere)
+        {
+            textMesh.text = "";
+            bulle.GetComponent<Animation>().Play("Dissapear");
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.tag == "Player")
         {
+            isPlayerHere = true;
             Debug.Log("Jizo Triggered"); 
             //bulle.SetActive(true);
             bulle.GetComponent<Animation>().Play("PopOut");
             StartCoroutine(RevealLetterByLetter(msg));
+            isSpeaking = true;
         }
     }
 
@@ -132,16 +150,20 @@ public class JizoInteractionManager : MonoBehaviour
     {
         if(collider.tag == "Player")
         {
-            bulle.SetActive(false);
+            isPlayerHere = false;
+            //bulle.SetActive(false);
             if(!enigmeDone)
             {
                 FMODUnity.RuntimeManager.PlayOneShot("event:/Resolution enigme");
                 enigmeDone = true;
             }
-            
-            textMesh.text = "";
-            bulle.GetComponent<Animation>().Play("Dissapear");
-            //bulle.SetActive(false);
+
+            if (!isSpeaking)
+            {
+                textMesh.text = "";
+                bulle.GetComponent<Animation>().Play("Dissapear");
+                //bulle.SetActive(false);
+            }
         }
     }
 }
