@@ -5,16 +5,11 @@ using UnityEngine;
 public class JizoInteractionManager : MonoBehaviour
 {
     public GameObject bulle;
+    bool enigmeDone = false;
 
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        enigmeDone = false;
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -31,6 +26,12 @@ public class JizoInteractionManager : MonoBehaviour
         if(collider.tag == "Player")
         {
             bulle.SetActive(false);
+            if(!enigmeDone)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Resolution enigme");
+                enigmeDone = true;
+            }
+            
         }
     }
 }
