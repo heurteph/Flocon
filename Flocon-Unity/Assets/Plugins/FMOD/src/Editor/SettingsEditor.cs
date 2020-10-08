@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
 using System;
+using System.Linq;
 
 namespace FMODUnity
 {
@@ -21,15 +22,13 @@ namespace FMODUnity
             "5.1",
             "7.1" };
 
-        int[] SpeakerModeValues = new int[] {
-            (int)FMOD.SPEAKERMODE.STEREO,
-            (int)FMOD.SPEAKERMODE._5POINT1,
-            (int)FMOD.SPEAKERMODE._7POINT1};
-
-        bool[] foldoutState = new bool[(int)FMODPlatform.Count];
+        FMOD.SPEAKERMODE[] SpeakerModeValues = new FMOD.SPEAKERMODE[] {
+            FMOD.SPEAKERMODE.STEREO,
+            FMOD.SPEAKERMODE._5POINT1,
+            FMOD.SPEAKERMODE._7POINT1};
 
         bool hasBankSourceChanged = false;
-        string targetAssetPath;
+        string targetSubFolder;
         bool focused = false;
         bool bankFoldOutState = true;
 
@@ -40,342 +39,210 @@ namespace FMODUnity
             Multi
         }
 
-        string PlatformLabel(FMODPlatform platform)
+        void DisplayTriStateBool(string label, Platform platform, Platform.PropertyAccessor<TriStateBool> property)
         {
-            switch(platform)
+            TriStateBool current = property.Get(platform);
+
+            if (platform.Parent != null)
             {
-                case FMODPlatform.Linux:
-                    return "Linux";
-                case FMODPlatform.Desktop:
-                    return "Desktop";
-                case FMODPlatform.Console:
-                    return "Console";
-                case FMODPlatform.iOS:
-                    return "iOS";
-                case FMODPlatform.Mac:
-                    return "OSX";
-                case FMODPlatform.Mobile:
-                    return "Mobile";
-                case FMODPlatform.PS4:
-                    return "PS4";
-                case FMODPlatform.Windows:
-                    return "Windows";
-                case FMODPlatform.UWP:
-                    return "UWP";
-                case FMODPlatform.XboxOne:
-                    return "XBox One";
-                case FMODPlatform.Android:
-                    return "Android";
-                case FMODPlatform.AppleTV:
-                    return "Apple TV";
-                case FMODPlatform.MobileHigh:
-                    return "High-End Mobile";
-                case FMODPlatform.MobileLow:
-                    return "Low-End Mobile";
-                case FMODPlatform.Stadia:
-                    return "Stadia";
-                case FMODPlatform.Switch:
-                    return "Switch";
-            }
-            return "Unknown";
-        }
+                bool overriden = property.HasValue(platform);
+                TriStateBool parent = property.Get(platform.Parent);
 
-        void DisplayEditorBool(string label, List<PlatformBoolSetting> settings, FMODPlatform platform)
-        {
-            int current = Settings.GetSetting(settings, platform, TriStateBool.Disabled) != TriStateBool.Disabled ? 0 : 1;            
-            int next = EditorGUILayout.Popup(label, (int)current, ToggleEditor);
-            Settings.SetSetting(settings, platform, next == 0 ? TriStateBool.Enabled : TriStateBool.Disabled);
-        }
+                string[] toggleChild = new string[ToggleParent.Length + 1];
+                Array.Copy(ToggleParent, 0, toggleChild, 1, ToggleParent.Length);
+                toggleChild[0] = string.Format("Inherit ({0})", ToggleParent[(int)parent]);
 
-        void DisplayParentBool(string label, List<PlatformBoolSetting> settings, FMODPlatform platform)
-        {
-            TriStateBool current = Settings.GetSetting(settings, platform, TriStateBool.Disabled);
-            int next = EditorGUILayout.Popup(label, (int)current, ToggleParent);
-            Settings.SetSetting(settings, platform, (TriStateBool)next);
-        }
+                int next = EditorGUILayout.Popup(label, overriden ? (int)current + 1 : 0, toggleChild);
 
-        void DisplayChildBool(string label, List<PlatformBoolSetting> settings, FMODPlatform platform)
-        {
-            bool overriden = Settings.HasSetting(settings, platform);
-            TriStateBool parent = Settings.GetSetting(settings, Settings.GetParent(platform), TriStateBool.Disabled);
-            TriStateBool current = Settings.GetSetting(settings, platform, TriStateBool.Disabled);
-
-            string[] toggleChild = new string[ToggleParent.Length + 1];
-            Array.Copy(ToggleParent, 0, toggleChild, 1, ToggleParent.Length);
-            toggleChild[0] = string.Format("Inherit ({0})", ToggleParent[(int)parent]);
-
-            int next = EditorGUILayout.Popup(label, overriden ? (int)current  + 1: 0, toggleChild);
-            if (next == 0)
-            {
-                if (overriden)
+                if (next == 0)
                 {
-                    Settings.RemoveSetting(settings, platform);
+                    property.Clear(platform);
+                }
+                else
+                {
+                    property.Set(platform, (TriStateBool)(next-1));
+                }
+            }
+            else if (platform is PlatformPlayInEditor)
+            {
+                int next = EditorGUILayout.Popup(label, (current != TriStateBool.Disabled) ? 0 : 1, ToggleEditor);
+                property.Set(platform, next == 0 ? TriStateBool.Enabled : TriStateBool.Disabled);
+            }
+            else
+            {
+                int next = EditorGUILayout.Popup(label, (int)current, ToggleParent);
+                property.Set(platform, (TriStateBool)next);
+            }
+        }
+
+        void DisplaySampleRate(string label, Platform platform)
+        {
+            int currentValue = platform.SampleRate;
+            int currentIndex = Array.IndexOf(FrequencyValues, currentValue);
+
+            if (platform.Parent != null)
+            {
+                int parentValue = platform.Parent.SampleRate;
+                int parentIndex = Array.IndexOf(FrequencyValues, parentValue);
+
+                string[] valuesChild = new string[FrequencyDisplay.Length + 1];
+                Array.Copy(FrequencyDisplay, 0, valuesChild, 1, FrequencyDisplay.Length);
+                valuesChild[0] = string.Format("Inherit ({0})", FrequencyDisplay[parentIndex]);
+
+                bool overriden = Platform.PropertyAccessors.SampleRate.HasValue(platform);
+
+                int next = EditorGUILayout.Popup(label, overriden ? currentIndex + 1 : 0, valuesChild);
+                if (next == 0)
+                {
+                    Platform.PropertyAccessors.SampleRate.Clear(platform);
+                }
+                else
+                {
+                    Platform.PropertyAccessors.SampleRate.Set(platform, FrequencyValues[next - 1]);
                 }
             }
             else
             {
-                Settings.SetSetting(settings, platform, (TriStateBool)(next-1));
+                int next = EditorGUILayout.Popup(label, currentIndex, FrequencyDisplay);
+                Platform.PropertyAccessors.SampleRate.Set(platform, FrequencyValues[next]);
             }
         }
 
-        void DisplayParentInt(string label, List<PlatformIntSetting> settings, FMODPlatform platform, int min, int max)
+        void DisplayBuildDirectory(string label, Platform platform)
         {
-            int current = Settings.GetSetting(settings, platform, 0);
-            int next = EditorGUILayout.IntSlider(label, current, min, max);
-            Settings.SetSetting(settings, platform, next);
+            string[] buildDirectories = EditorUtils.GetBankPlatforms();
+
+            string currentValue = platform.BuildDirectory;
+            int currentIndex = Math.Max(Array.IndexOf(buildDirectories, currentValue), 0);
+
+            if (platform.Parent != null || platform is PlatformPlayInEditor)
+            {
+                string[] values = new string[buildDirectories.Length + 1];
+                Array.Copy(buildDirectories, 0, values, 1, buildDirectories.Length);
+
+                if (platform is PlatformPlayInEditor)
+                {
+                    Settings settings = target as Settings;
+                    values[0] = string.Format("Current Unity Platform ({0})", settings.CurrentEditorPlatform.BuildDirectory);
+                }
+                else
+                {
+                    values[0] = string.Format("Inherit ({0})", platform.Parent.BuildDirectory);
+                }
+
+                bool overriden = Platform.PropertyAccessors.BuildDirectory.HasValue(platform);
+                int next = EditorGUILayout.Popup(label, overriden ? currentIndex + 1 : 0, values);
+
+                if (next == 0)
+                {
+                    Platform.PropertyAccessors.BuildDirectory.Clear(platform);
+                    Platform.PropertyAccessors.SpeakerMode.Clear(platform);
+                }
+                else
+                {
+                    Platform.PropertyAccessors.BuildDirectory.Set(platform, buildDirectories[next - 1]);
+                }
+            }
+            else
+            {
+                int next = EditorGUILayout.Popup(label, currentIndex, buildDirectories);
+                Platform.PropertyAccessors.BuildDirectory.Set(platform, buildDirectories[next]);
+            }
         }
 
-        void DisplayChildInt(string label, List<PlatformIntSetting> settings, FMODPlatform platform, int min, int max)
+        void DisplaySpeakerMode(string label, Platform platform)
         {
-            bool overriden = Settings.HasSetting(settings, platform);
-            int current = Settings.GetSetting(settings, platform, 0);
+            FMOD.SPEAKERMODE currentValue = platform.SpeakerMode;
+            int currentIndex = Math.Max(Array.IndexOf(SpeakerModeValues, currentValue), 0);
 
+            if (platform.Parent != null || platform is PlatformPlayInEditor)
+            {
+                bool overriden = Platform.PropertyAccessors.SpeakerMode.HasValue(platform);
+
+                string[] values = new string[SpeakerModeDisplay.Length + 1];
+                Array.Copy(SpeakerModeDisplay, 0, values, 1, SpeakerModeDisplay.Length);
+
+                if (platform is PlatformPlayInEditor)
+                {
+                    Settings settings = target as Settings;
+                    FMOD.SPEAKERMODE currentPlatformValue = settings.CurrentEditorPlatform.SpeakerMode;
+                    int index = Array.IndexOf(SpeakerModeValues, currentPlatformValue);
+                    values[0] = string.Format("Current Unity Platform ({0})", SpeakerModeDisplay[index]);
+                }
+                else
+                {
+                    FMOD.SPEAKERMODE parentValue = platform.Parent.SpeakerMode;
+                    int index = Array.IndexOf(SpeakerModeValues, parentValue);
+                    values[0] = string.Format("Inherit ({0})", SpeakerModeDisplay[index]);
+                }
+
+                bool hasBuildDirectory = Platform.PropertyAccessors.BuildDirectory.HasValue(platform);
+
+                if (!hasBuildDirectory)
+                {
+                    EditorGUI.BeginDisabledGroup(true);
+                }
+
+                int next = EditorGUILayout.Popup(label, overriden ? currentIndex + 1 : 0, values);
+                if (next == 0)
+                {
+                    Platform.PropertyAccessors.SpeakerMode.Clear(platform);
+                }
+                else
+                {
+                    Platform.PropertyAccessors.SpeakerMode.Set(platform, SpeakerModeValues[next - 1]);
+                }
+
+                if (hasBuildDirectory)
+                {
+                    EditorGUILayout.HelpBox(string.Format("Match the speaker mode to the setting of the platform <b>{0}</b> inside FMOD Studio", platform.BuildDirectory), MessageType.Info, false);
+                }
+                else
+                {
+                    EditorGUI.EndDisabledGroup();
+                }
+            }
+            else
+            {
+                int next = EditorGUILayout.Popup(label, currentIndex, SpeakerModeDisplay);
+                Platform.PropertyAccessors.SpeakerMode.Set(platform, SpeakerModeValues[next]);
+                EditorGUILayout.HelpBox(string.Format("Match the speaker mode to the setting of the platform <b>{0}</b> inside FMOD Studio", platform.BuildDirectory), MessageType.Info, false);
+            }
+        }
+
+        void DisplayInt(string label, Platform platform, Platform.PropertyAccessor<int> property, int min, int max)
+        {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(label);
-            overriden = !GUILayout.Toggle(!overriden, "Inherit");
-            EditorGUI.BeginDisabledGroup(!overriden);
-            int next = EditorGUILayout.IntSlider(current, min, max);
-            EditorGUI.EndDisabledGroup();
+
+            int currentValue = property.Get(platform);
+
+            if (platform.Parent != null)
+            {
+                bool inherit = !property.HasValue(platform);
+
+                inherit = GUILayout.Toggle(inherit, "Inherit");
+
+                EditorGUI.BeginDisabledGroup(inherit);
+                int next = EditorGUILayout.IntSlider(currentValue, min, max);
+                EditorGUI.EndDisabledGroup();
+
+                if (inherit)
+                {
+                    property.Clear(platform);
+                }
+                else
+                {
+                    property.Set(platform, next);
+                }
+            }
+            else
+            {
+                int next = EditorGUILayout.IntSlider(currentValue, min, max);
+                property.Set(platform, next);
+            }
+
             EditorGUILayout.EndHorizontal();
-
-            if (overriden)
-            {
-                Settings.SetSetting(settings, platform, next);
-            }
-            else
-            {
-                Settings.RemoveSetting(settings, platform);
-            }
-        }
-
-        void DisplayParentFreq(string label, List<PlatformIntSetting> settings, FMODPlatform platform)
-        {
-            int current = Settings.GetSetting(settings, platform, 0);
-            int index = Array.IndexOf(FrequencyValues, current);
-            int next = EditorGUILayout.Popup(label, index, FrequencyDisplay);
-            Settings.SetSetting(settings, platform, FrequencyValues[next]);
-        }
-
-        void DisplayChildFreq(string label, List<PlatformIntSetting> settings, FMODPlatform platform)
-        {
-            bool overriden = Settings.HasSetting(settings, platform);
-            int current = Settings.GetSetting(settings, platform, 0);
-            int inherit = Settings.GetSetting(settings, Settings.GetParent(platform), 0);
-            int currentIndex = Array.IndexOf(FrequencyValues, current);
-            int inheritIndex = Array.IndexOf(FrequencyValues, inherit);
-
-            string[] valuesChild = new string[FrequencyDisplay.Length + 1];
-            Array.Copy(FrequencyDisplay, 0, valuesChild, 1, FrequencyDisplay.Length);
-            valuesChild[0] = string.Format("Inherit ({0})", FrequencyDisplay[inheritIndex]);
-
-            int next = EditorGUILayout.Popup(label, overriden ? currentIndex + 1 : 0, valuesChild);
-            if (next == 0)
-            {
-                Settings.RemoveSetting(settings, platform);
-            }
-            else
-            {
-                Settings.SetSetting(settings, platform, FrequencyValues[next-1]);
-            }
-        }
-
-        void DisplayParentSpeakerMode(string label, List<PlatformIntSetting> settings, FMODPlatform platform)
-        {
-            int current = Settings.GetSetting(settings, platform, (int)FMOD.SPEAKERMODE.STEREO);
-            int index = Array.IndexOf(SpeakerModeValues, current);
-            int next = EditorGUILayout.Popup(label, index, SpeakerModeDisplay);
-            Settings.SetSetting(settings, platform, SpeakerModeValues[next]);
-        }
-
-        void DisplayPIESpeakerMode(string label, List<PlatformIntSetting> settings, FMODPlatform platform)
-        {
-            int buildTargetSetting = Settings.GetSetting(settings, RuntimeUtils.GetEditorFMODPlatform(), (int)FMOD.SPEAKERMODE.STEREO);
-            int buildTargetIndex = Array.IndexOf(SpeakerModeValues, buildTargetSetting);
-            string[] speakerModes = new string[SpeakerModeDisplay.Length + 1];
-            Array.Copy(SpeakerModeDisplay, 0, speakerModes, 1, SpeakerModeDisplay.Length);
-            speakerModes[0] = string.Format("Current Unity Platform ({0})", SpeakerModeDisplay[buildTargetIndex]);
-
-            bool useCurrentUnity = !Settings.HasSetting(settings, platform);
-            
-            int current = Settings.GetSetting(settings, platform, (int)FMOD.SPEAKERMODE.STEREO);
-            int index = Array.IndexOf(SpeakerModeValues, current) + 1;
-            if (useCurrentUnity || index < 0) index = 0;
-            int next = EditorGUILayout.Popup(label, index, speakerModes);
-            if (next != 0)
-            {
-                Settings.SetSetting(settings, platform, SpeakerModeValues[next - 1]);
-            }
-            else
-            {
-                Settings.RemoveSetting(settings, platform);
-            }
-        }
-
-        void DisplayChildSpeakerMode(string label, List<PlatformIntSetting> settings, FMODPlatform platform)
-        {
-            bool overriden = Settings.HasSetting(settings, platform);
-            int current = Settings.GetSetting(settings, platform, 0);
-            int inherit = Settings.GetSetting(settings, Settings.GetParent(platform), 0);
-            int currentIndex = Array.IndexOf(SpeakerModeValues, current);
-            int inheritIndex = Array.IndexOf(SpeakerModeValues, inherit);
-
-            string[] valuesChild = new string[SpeakerModeDisplay.Length + 1];
-            Array.Copy(SpeakerModeDisplay, 0, valuesChild, 1, SpeakerModeDisplay.Length);
-            valuesChild[0] = string.Format("Inherit ({0})", SpeakerModeDisplay[inheritIndex]);
-
-            int next = EditorGUILayout.Popup(label, overriden ? currentIndex + 1 : 0, valuesChild);
-            if (next == 0)
-            {
-                Settings.RemoveSetting(settings, platform);
-            }
-            else
-            {
-                Settings.SetSetting(settings, platform, SpeakerModeValues[next - 1]);
-            }
-        }
-
-        void DisplayParentBuildDirectory(string label, List<PlatformStringSetting> settings, FMODPlatform platform)
-        {
-            string[] buildDirectories = EditorUtils.GetBankPlatforms();
-
-            string current = Settings.GetSetting(settings, platform, "Desktop");
-            int index = Array.IndexOf(buildDirectories, current);
-            if (index < 0) index = 0;
-
-            int next = EditorGUILayout.Popup(label, index, buildDirectories);
-            Settings.SetSetting(settings, platform, buildDirectories[next]);
-        }
-
-
-        void DisplayPIEBuildDirectory(string label, List<PlatformStringSetting> settings, FMODPlatform platform)
-        {
-            string buildTargetSetting = Settings.GetSetting(settings, RuntimeUtils.GetEditorFMODPlatform(), "Desktop");
-            string[] buildDirectories = new string[EditorUtils.GetBankPlatforms().Length + 1];
-            Array.Copy(EditorUtils.GetBankPlatforms(), 0, buildDirectories, 1, EditorUtils.GetBankPlatforms().Length);
-            buildDirectories[0] = String.Format("Current Unity Platform ({0})", buildTargetSetting);
-
-            bool useCurrentUnity = !Settings.HasSetting(settings, platform);
-            string current = Settings.GetSetting(settings, platform, "Desktop");
-            int index = Array.IndexOf(buildDirectories, current);
-            if (useCurrentUnity || index < 0) index = 0;
-
-            int next = EditorGUILayout.Popup(label, index, buildDirectories);
-            if (next != 0)
-            {
-                Settings.SetSetting(settings, platform, buildDirectories[next]);
-            }
-            else
-            {
-                Settings.RemoveSetting(settings, platform);
-            }
-        }
-
-        void DisplayChildBuildDirectories(string label, List<PlatformStringSetting> settings, FMODPlatform platform)
-        {
-            string[] buildDirectories = EditorUtils.GetBankPlatforms();
-
-            bool overriden = Settings.HasSetting(settings, platform);
-            string current = Settings.GetSetting(settings, platform, "Desktop");
-            string inherit = Settings.GetSetting(settings, Settings.GetParent(platform), "Desktop");
-            int index = Array.IndexOf(buildDirectories, current);
-            if (index < 0) index = 0;
-
-            string[] valuesChild = new string[buildDirectories.Length + 1];
-            Array.Copy(buildDirectories, 0, valuesChild, 1, buildDirectories.Length);
-            valuesChild[0] = string.Format("Inherit ({0})", inherit);
-
-            int next = EditorGUILayout.Popup(label, overriden ? index + 1 : 0, valuesChild);
-            if (next == 0)
-            {
-                Settings.RemoveSetting(settings, platform);
-                Settings.RemoveSetting(((Settings)target).SpeakerModeSettings, platform);
-            }
-            else
-            {
-                Settings.SetSetting(settings, platform, buildDirectories[next - 1]);
-            }
-        }
-
-        void DisplayPlatform(FMODPlatform platform, FMODPlatform[] children = null)
-        {
-            Settings settings = target as Settings;
-
-            var label = new System.Text.StringBuilder();
-            label.AppendFormat("<b>{0}</b>", (PlatformLabel(platform)));
-            if (children != null)
-            {
-                label.Append(" (");
-                foreach (var child in children)
-                {
-                    label.Append(PlatformLabel(child));
-                    label.Append(", ");
-                }
-                label.Remove(label.Length - 2, 2);
-                label.Append(")");
-            }
-            
-            GUIStyle style = new GUIStyle(GUI.skin.FindStyle("Foldout"));
-            style.richText = true;
-            
-            foldoutState[(int)platform] = EditorGUILayout.Foldout(foldoutState[(int)platform], new GUIContent(label.ToString()), style);
-            if (foldoutState[(int)platform])
-            {
-                EditorGUI.indentLevel++;
-                DisplayChildBool("Live Update", settings.LiveUpdateSettings, platform);
-                if (settings.IsLiveUpdateEnabled(platform))
-                {
-                    GUIStyle style2 = new GUIStyle(GUI.skin.label);
-                    style2.richText = true;
-                    EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.PrefixLabel(" ");
-                    GUILayout.Label("Live update will listen on port <b>9264</b>", style2);
-                    EditorGUILayout.EndHorizontal();
-                }
-                DisplayChildBool("Debug Overlay", settings.OverlaySettings, platform);
-                DisplayChildFreq("Sample Rate", settings.SampleRateSettings, platform);
-                if (settings.HasPlatforms && AllowBankChange(platform))
-                {
-                    bool prevChanged = GUI.changed;
-                    DisplayChildBuildDirectories("Bank Platform", settings.BankDirectorySettings, platform);
-                    hasBankSourceChanged |= !prevChanged && GUI.changed;
-
-                    if (Settings.HasSetting(settings.BankDirectorySettings, platform))
-                    {
-                        DisplayChildSpeakerMode("Speaker Mode", settings.SpeakerModeSettings, platform);
-                        EditorGUILayout.HelpBox(string.Format("Match the speaker mode to the setting of the platform <b>{0}</b> inside FMOD Studio", settings.GetBankPlatform(platform)), MessageType.Info, false);
-                    }
-                    else
-                    {
-                        EditorGUI.BeginDisabledGroup(true);
-                        DisplayChildSpeakerMode("Speaker Mode", settings.SpeakerModeSettings, platform);
-                        EditorGUI.EndDisabledGroup();
-                    }
-                }
-
-                DisplayChildInt("Virtual Channel Count", settings.VirtualChannelSettings, platform, 1, 2048);
-                DisplayChildInt("Real Channel Count", settings.RealChannelSettings, platform, 1, 256);
-
-                if (children != null)
-                {
-                    foreach (var child in children)
-                    {
-                        DisplayPlatform(child);
-                    }
-                }
-
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private bool AllowBankChange(FMODPlatform platform)
-        {
-            // Can't do these settings on pseudo-platforms
-            if (platform == FMODPlatform.MobileLow || platform == FMODPlatform.MobileHigh)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private bool DrawLinks()
@@ -422,6 +289,226 @@ namespace FMODUnity
             return true;
         }
 
+        Dictionary<string, bool> expandPlatform = new Dictionary<string, bool>();
+
+        private void DisplayPlatform(Platform platform)
+        {
+            if (!platform.Active)
+            {
+                return;
+            }
+
+            var label = new System.Text.StringBuilder();
+            label.AppendFormat("<b>{0}</b>", platform.DisplayName);
+
+            if (!platform.IsIntrinsic && platform.Children.Count > 0)
+            {
+                IEnumerable<string> children = platform.Children
+                    .Where(child => child.Active)
+                    .Select(child => child.DisplayName);
+
+                if (children.Any())
+                {
+                    label.Append(" (");
+                    label.Append(string.Join(", ", children.ToArray()));
+                    label.Append(")");
+                }
+            }
+            
+            EditorGUILayout.BeginHorizontal();
+
+            bool expand = true;
+
+            if (platform.IsIntrinsic)
+            {
+                GUIStyle style = new GUIStyle(GUI.skin.label);
+                style.richText = true;
+
+                EditorGUILayout.LabelField(label.ToString(), style);
+            }
+            else
+            {
+                expand = false;
+
+                if (expandPlatform.ContainsKey(platform.Identifier))
+                {
+                    expand = expandPlatform[platform.Identifier];
+                }
+
+                GUIStyle style = new GUIStyle(GUI.skin.FindStyle("Foldout"));
+                style.richText = true;
+
+                expand = EditorGUILayout.Foldout(expand, new GUIContent(label.ToString()), style);
+
+                expandPlatform[platform.Identifier] = expand;
+
+                if (GUILayout.Button("Delete", GUILayout.ExpandWidth(false)))
+                {
+                    // This avoids modifying the parent platform's children list while we're iterating over it
+                    pendingPlatformDelete = platform;
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            if (expand)
+            {
+                Settings settings = target as Settings;
+
+                EditorGUI.indentLevel++;
+
+                PlatformGroup group = platform as PlatformGroup;
+
+                if (group != null)
+                {
+                    group.displayName = EditorGUILayout.DelayedTextField("Name", group.displayName);
+                }
+
+                DisplayPlatformParent(platform);
+
+                DisplayTriStateBool("Live Update", platform, Platform.PropertyAccessors.LiveUpdate);
+
+                if (platform.IsLiveUpdateEnabled)
+                {
+                    if (platform.IsIntrinsic)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        settings.LiveUpdatePort = ushort.Parse(EditorGUILayout.TextField("Live Update Port", settings.LiveUpdatePort.ToString()));
+                        if (GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
+                        {
+                            settings.LiveUpdatePort = 9264;
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    else
+                    {
+                        GUIStyle style = new GUIStyle(GUI.skin.label);
+                        style.richText = true;
+
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.PrefixLabel(" ");
+                        GUILayout.Label(string.Format("Live update will listen on port <b>{0}</b>", settings.LiveUpdatePort), style);
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+
+                DisplayTriStateBool("Debug Overlay", platform, Platform.PropertyAccessors.Overlay);
+                DisplaySampleRate("Sample Rate", platform);
+
+                if (settings.HasPlatforms)
+                {
+                    bool prevChanged = GUI.changed;
+                    DisplayBuildDirectory("Bank Platform", platform);
+                    hasBankSourceChanged |= !prevChanged && GUI.changed;
+
+                    DisplaySpeakerMode("Speaker Mode", platform);
+                }
+
+                if (!(platform is PlatformPlayInEditor))
+                {
+                    DisplayInt("Virtual Channel Count", platform, Platform.PropertyAccessors.VirtualChannelCount, 1, 2048);
+                    DisplayInt("Real Channel Count", platform, Platform.PropertyAccessors.RealChannelCount, 1, 256);
+                    DisplayPlugins(platform);
+                }
+
+                if (!platform.IsIntrinsic)
+                {
+                    foreach (Platform child in platform.Children)
+                    {
+                        DisplayPlatform(child);
+                    }
+                }
+
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        Dictionary<string, bool> expandPlugins = new Dictionary<string, bool>();
+
+        private void DisplayPlugins(Platform platform)
+        {
+            List<string> plugins = platform.Plugins;
+
+            bool expand;
+            expandPlugins.TryGetValue(platform.Identifier, out expand);
+
+            EditorGUILayout.BeginHorizontal();
+
+            string title = string.Format("Plugins: {0}", plugins.Count);
+
+            expand = EditorGUILayout.Foldout(expand, new GUIContent(title), true);
+
+            var property = Platform.PropertyAccessors.Plugins;
+
+            bool inherit = false;
+
+            if (platform.Parent != null)
+            {
+                inherit = !property.HasValue(platform);
+
+                EditorGUI.BeginChangeCheck();
+
+                inherit = GUILayout.Toggle(inherit, "Inherit");
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (inherit)
+                    {
+                        property.Clear(platform);
+                    }
+                    else
+                    {
+                        plugins = new List<string>(property.Get(platform.Parent));
+                        property.Set(platform, plugins);
+
+                        if (plugins.Count > 0)
+                        {
+                            expand = true;
+                        }
+                    }
+                }
+            }
+
+            EditorGUI.BeginDisabledGroup(inherit);
+
+            if (GUILayout.Button("Add Plugin", GUILayout.ExpandWidth(false)))
+            {
+                plugins.Add("");
+                expand = true;
+            }
+            EditorGUILayout.EndHorizontal();
+
+            if (expand)
+            {
+                EditorGUI.indentLevel++;
+
+                for (int count = 0; count < plugins.Count; count++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    plugins[count] = EditorGUILayout.TextField("Plugin " + (count + 1).ToString() + ":", plugins[count]);
+
+                    if (GUILayout.Button("Delete Plugin", GUILayout.ExpandWidth(false)))
+                    {
+                        plugins.RemoveAt(count);
+
+                        if (plugins.Count == 0)
+                        {
+                            expand = false;
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                EditorGUI.indentLevel--;
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            expandPlugins[platform.Identifier] = expand;
+        }
+
+        private Platform pendingPlatformDelete;
+
         public override void OnInspectorGUI()
         {
             Settings settings = target as Settings;
@@ -452,7 +539,7 @@ namespace FMODUnity
                 "<size=11>Select the way you wish to connect Unity to the FMOD Studio content:\n" +
                 "<b>• Project</b>\t\tIf you have the complete FMOD Studio project avaliable\n" +
                 "<b>• Single Platform</b>\tIf you have only the contents of the <i>Build</i> folder for a single platform\n" +
-                "<b>• Multiple Platforms</b>\tIf you have only the contents of the <i>Build</i> folder for multiple platforms, each platform in it's own sub directory\n" + 
+                "<b>• Multiple Platforms</b>\tIf you have only the contents of the <i>Build</i> folder for multiple platforms, each platform in its own sub directory\n" + 
                 "</size>"
                 , MessageType.Info, true);
             EditorGUILayout.EndVertical();
@@ -548,17 +635,6 @@ namespace FMODUnity
                 return;
             }
 
-            if (!RuntimeUtils.VerifyPlatformLibsExist())
-            {
-                string errMsg = "Unable to find the FMOD '" + RuntimeUtils.GetEditorFMODPlatform() + "' libs. See console for details.";
-                EditorGUILayout.HelpBox(errMsg, MessageType.Error, true);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    EditorUtility.SetDirty(settings);
-                }
-                return;
-            }
-
             ImportType importType = (ImportType)EditorGUILayout.EnumPopup("Import Type", settings.ImportType);
             if (importType != settings.ImportType)
             {
@@ -566,8 +642,8 @@ namespace FMODUnity
                 settings.ImportType = importType;
 
                 bool deleteBanks = EditorUtility.DisplayDialog(
-                    "FMOD Bank Import Type Changed", "Do you want to delete the " + (importType == ImportType.AssetBundle ? "StreamingAssets" : "AssetBundle") + " banks in " + (importType == ImportType.AssetBundle ? Application.streamingAssetsPath : Application.dataPath + '/' + settings.TargetAssetPath)
-                    , "Yes", "No");
+                    "FMOD Bank Import Type Changed", "Do you want to delete the " + settings.ImportType.ToString() + " banks in " + settings.TargetPath,
+                    "Yes", "No");
                 if (deleteBanks)
                 {
                     // Delete the old banks
@@ -576,12 +652,13 @@ namespace FMODUnity
                 }
             }
 
-            // ----- Text Assets -------------
-            if (settings.ImportType == ImportType.AssetBundle)
+            // ----- Asset Sub Directory -------------
             {
-                GUI.SetNextControlName("targetAssetPath");
-                targetAssetPath = EditorGUILayout.TextField("FMOD Asset Folder", string.IsNullOrEmpty(targetAssetPath) ? settings.TargetAssetPath : targetAssetPath);
-                if (GUI.GetNameOfFocusedControl() == "targetAssetPath")
+                GUI.SetNextControlName("targetSubFolder");
+                targetSubFolder = settings.ImportType == ImportType.AssetBundle
+                    ? EditorGUILayout.TextField("FMOD Asset Sub Folder", string.IsNullOrEmpty(targetSubFolder) ? settings.TargetAssetPath : targetSubFolder)
+                    : EditorGUILayout.TextField("FMOD Bank Sub Folder", string.IsNullOrEmpty(targetSubFolder) ? settings.TargetSubFolder : targetSubFolder);
+                if (GUI.GetNameOfFocusedControl() == "targetSubFolder")
                 {
                     focused = true;
                     if (Event.current.isKey)
@@ -590,24 +667,26 @@ namespace FMODUnity
                         {
                             case KeyCode.Return:
                             case KeyCode.KeypadEnter:
-                                if (settings.TargetAssetPath != targetAssetPath)
+                                if (settings.TargetSubFolder != targetSubFolder)
                                 {
-                                    EventManager.RemoveBanks(Application.dataPath + '/' + settings.TargetAssetPath);
-                                    settings.TargetAssetPath = targetAssetPath;
+                                    EventManager.RemoveBanks(settings.TargetPath);
+                                    settings.TargetSubFolder = targetSubFolder;
                                     hasBankTargetChanged = true;
                                 }
+                                targetSubFolder = "";
                                 break;
                         }
                     }
                 }
                 else if (focused)
                 {
-                    if (settings.TargetAssetPath != targetAssetPath)
+                    if (settings.TargetPath != targetSubFolder)
                     {
-                        EventManager.RemoveBanks(Application.dataPath + '/' + settings.TargetAssetPath);
-                        settings.TargetAssetPath = targetAssetPath;
+                        EventManager.RemoveBanks(settings.TargetPath);
+                        settings.TargetSubFolder = targetSubFolder;
                         hasBankTargetChanged = true;
                     }
+                    targetSubFolder = "";
                 }
             }
 
@@ -623,6 +702,8 @@ namespace FMODUnity
             EditorGUILayout.Separator();
             EditorGUILayout.LabelField("<b>Initialization</b>", style);
             EditorGUI.indentLevel++;
+
+            settings.EnableMemoryTracking = EditorGUILayout.Toggle("Enable Memory Tracking", settings.EnableMemoryTracking);
 
             settings.BankLoadType = (BankLoadType)EditorGUILayout.EnumPopup("Load Banks", settings.BankLoadType);
             switch (settings.BankLoadType)
@@ -668,10 +749,11 @@ namespace FMODUnity
                             if (GUILayout.Button("Browse", GUILayout.ExpandWidth(false)))
                             {
                                 GUI.FocusControl(null);
-                                string path = EditorUtility.OpenFilePanel("Locate Bank", Application.streamingAssetsPath, "bank");
+                                string path = EditorUtility.OpenFilePanel("Locate Bank", settings.TargetPath, "bank");
                                 if (!string.IsNullOrEmpty(path))
                                 {
-                                    settings.BanksToLoad[i] = path.Replace(Application.streamingAssetsPath + Path.AltDirectorySeparatorChar, "");
+                                    path = RuntimeUtils.GetCommonPlatformPath(path);
+                                    settings.BanksToLoad[i] = path.Replace(settings.TargetPath, "");
                                     Repaint();
                                 }
                             }
@@ -692,21 +774,29 @@ namespace FMODUnity
                         }
                         if (GUILayout.Button("Add All Banks", GUILayout.ExpandWidth(false)))
                         {
-                            FMODPlatform platform = RuntimeUtils.GetEditorFMODPlatform();
-                            if (platform == FMODPlatform.None)
+                            string sourceDir;
+
+                            if (settings.HasSourceProject)
                             {
-                                platform = FMODPlatform.PlayInEditor;
+                                sourceDir = string.Format("{0}/{1}/", settings.SourceBankPath, settings.CurrentEditorPlatform.BuildDirectory);
                             }
-                            string sourceDir = RuntimeUtils.GetCommonPlatformPath(settings.SourceBankPath + '/' + (settings.HasSourceProject ? settings.GetBankPlatform(platform) + '/' : ""));
+                            else
+                            {
+                                sourceDir = settings.SourceBankPath;
+                            }
+
+                            sourceDir = RuntimeUtils.GetCommonPlatformPath(sourceDir);
+
                             var banksFound = new List<string>(Directory.GetFiles(sourceDir, "*.bank", SearchOption.AllDirectories));
                             for (int i = 0; i < banksFound.Count; i++)
                             {
-                                string bankShortName = RuntimeUtils.GetCommonPlatformPath(Path.GetFullPath(banksFound[i])).Replace(sourceDir, "");
+                                string bankShortName = RuntimeUtils.GetCommonPlatformPath(banksFound[i]).Replace(sourceDir, "");
                                 if (!settings.BanksToLoad.Contains(bankShortName))
                                 {
                                     settings.BanksToLoad.Add(bankShortName);
                                 }
                             }
+
                             Repaint();
                         }
                         if (GUILayout.Button("Clear", GUILayout.ExpandWidth(false)))
@@ -734,104 +824,22 @@ namespace FMODUnity
 
             // ----- PIE ----------------------------------------------
             EditorGUILayout.Separator();
-            EditorGUILayout.LabelField("<b>Play In Editor Settings</b>", style);
-            EditorGUI.indentLevel++;
-            DisplayEditorBool("Live Update", settings.LiveUpdateSettings, FMODPlatform.PlayInEditor);
-            if (settings.IsLiveUpdateEnabled(FMODPlatform.PlayInEditor))
-            {
-                EditorGUILayout.BeginHorizontal();
-                settings.LiveUpdatePort = ushort.Parse(EditorGUILayout.TextField("Live Update Port:", settings.LiveUpdatePort.ToString()));
-                if (GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
-                {
-                    settings.LiveUpdatePort = 9264;
-                }
-                EditorGUILayout.EndHorizontal();
-
-            }
-            DisplayEditorBool("Debug Overlay", settings.OverlaySettings, FMODPlatform.PlayInEditor);
-            DisplayChildFreq("Sample Rate", settings.SampleRateSettings, FMODPlatform.PlayInEditor);
-            if (settings.HasPlatforms)
-            {
-                DisplayPIEBuildDirectory("Bank Platform", settings.BankDirectorySettings, FMODPlatform.PlayInEditor);
-            }
-
-            DisplayPIESpeakerMode("Speaker Mode", settings.SpeakerModeSettings, FMODPlatform.PlayInEditor);
-            if (settings.HasPlatforms)
-            {
-                EditorGUILayout.HelpBox(string.Format("Match the speaker mode to the setting of the platform <b>{0}</b> inside FMOD Studio", settings.GetBankPlatform(FMODPlatform.PlayInEditor)), MessageType.Info, false);
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("Match the speaker mode to the setting inside FMOD Studio", MessageType.Info, false);
-            }
-
-            EditorGUI.indentLevel--;
+            DisplayPlatform(settings.PlayInEditorPlatform);
 
             // ----- Default ----------------------------------------------
             EditorGUILayout.Separator();
-            EditorGUILayout.LabelField("<b>Default Settings</b>", style);
-            EditorGUI.indentLevel++;
-            DisplayParentBool("Live Update", settings.LiveUpdateSettings, FMODPlatform.Default);
-            if (settings.IsLiveUpdateEnabled(FMODPlatform.Default))
-            {
-                EditorGUILayout.BeginHorizontal();
-                settings.LiveUpdatePort = ushort.Parse(EditorGUILayout.TextField("Live Update Port:", settings.LiveUpdatePort.ToString()));
-                if (GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
-                {
-                    settings.LiveUpdatePort = 9264;
-                }
-                EditorGUILayout.EndHorizontal();
-            }
-            DisplayParentBool("Debug Overlay", settings.OverlaySettings, FMODPlatform.Default);
-            DisplayParentFreq("Sample Rate", settings.SampleRateSettings, FMODPlatform.Default);
-            if (settings.HasPlatforms)
-            {
-                bool prevChanged = GUI.changed;
-                DisplayParentBuildDirectory("Bank Platform", settings.BankDirectorySettings, FMODPlatform.Default);
-                hasBankSourceChanged |= !prevChanged && GUI.changed;
-            }
+            DisplayPlatform(settings.DefaultPlatform);
 
-            DisplayParentSpeakerMode("Speaker Mode", settings.SpeakerModeSettings, FMODPlatform.Default);
-            if (settings.HasPlatforms)
-            {
-                EditorGUILayout.HelpBox(string.Format("Match the speaker mode to the setting of the platform <b>{0}</b> inside FMOD Studio", settings.GetBankPlatform(FMODPlatform.Default)), MessageType.Info, false);
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("Match the speaker mode to the setting inside FMOD Studio", MessageType.Info, false);
-            }
-            DisplayParentInt("Virtual Channel Count", settings.VirtualChannelSettings, FMODPlatform.Default, 1, 2048);
-            DisplayParentInt("Real Channel Count", settings.RealChannelSettings, FMODPlatform.Default, 1, 256);
-            EditorGUI.indentLevel--;
-
-            // ----- Plugins ----------------------------------------------
+            // Top-level platforms
             EditorGUILayout.Separator();
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("<b>Plugins</b>", GUI.skin.button, style);
-            if (GUILayout.Button("Add Plugin", GUILayout.ExpandWidth(false)))
-            {
-                settings.Plugins.Add("");
-            }
-            EditorGUILayout.EndHorizontal();
+            DisplayPlatformHeader();
 
             EditorGUI.indentLevel++;
-            for (int count = 0; count < settings.Plugins.Count; count++)
+            foreach (Platform platform in settings.DefaultPlatform.Children)
             {
-                EditorGUILayout.BeginHorizontal();
-                settings.Plugins[count] = EditorGUILayout.TextField("Plugin " + (count + 1).ToString() + ":", settings.Plugins[count]);
-
-                if (GUILayout.Button("Delete Plugin", GUILayout.ExpandWidth(false)))
-                {
-                    settings.Plugins.RemoveAt(count);
-                }
-                EditorGUILayout.EndHorizontal();
+                DisplayPlatform(platform);
             }
             EditorGUI.indentLevel--;
-
-            // ----- Windows ----------------------------------------------
-            DisplayPlatform(FMODPlatform.Desktop, null);
-            DisplayPlatform(FMODPlatform.Mobile, new FMODPlatform[] { FMODPlatform.MobileHigh, FMODPlatform.MobileLow, FMODPlatform.AppleTV });
-            DisplayPlatform(FMODPlatform.Console, new FMODPlatform[] { FMODPlatform.XboxOne, FMODPlatform.PS4, FMODPlatform.Switch, FMODPlatform.Stadia });
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -845,6 +853,185 @@ namespace FMODUnity
             if (hasBankTargetChanged)
             {
                 EventManager.RefreshBanks();
+            }
+            if (pendingPlatformDelete != null)
+            {
+                settings.RemovePlatformProperties(pendingPlatformDelete);
+
+                ParentCandidates.Remove(pendingPlatformDelete);
+
+                if (!(pendingPlatformDelete is PlatformGroup))
+                {
+                    MissingPlatforms.Add(pendingPlatformDelete);
+                    MissingPlatforms.Sort(CompareDisplayNames);
+                }
+
+                pendingPlatformDelete = null;
+            }
+        }
+
+        [NonSerialized]
+        private Rect AddPlatformButtonRect;
+
+        [NonSerialized]
+        private List<Platform> ParentCandidates;
+
+        [NonSerialized]
+        private List<Platform> MissingPlatforms;
+
+        private static int CompareDisplayNames(Platform a, Platform b)
+        {
+            return EditorUtility.NaturalCompare(a.DisplayName, b.DisplayName);
+        }
+
+        private void BuildPlatformLists()
+        {
+            if (MissingPlatforms == null)
+            {
+                MissingPlatforms = new List<Platform>();
+                ParentCandidates = new List<Platform>();
+
+                Settings settings = target as Settings;
+
+                settings.ForEachPlatform(platform =>
+                    {
+                        if (!platform.Active)
+                        {
+                            MissingPlatforms.Add(platform);
+                        }
+                        else if (!platform.IsIntrinsic)
+                        {
+                            ParentCandidates.Add(platform);
+                        }
+                    });
+
+                MissingPlatforms.Sort(CompareDisplayNames);
+                ParentCandidates.Sort(CompareDisplayNames);
+            }
+        }
+
+        private void AddPlatformProperties(object data)
+        {
+            string identifier = data as string;
+
+            Settings settings = target as Settings;
+            Platform platform = settings.FindPlatform(identifier);
+
+            settings.AddPlatformProperties(platform);
+
+            MissingPlatforms.Remove(platform);
+
+            ParentCandidates.Add(platform);
+            ParentCandidates.Sort(CompareDisplayNames);
+        }
+
+        private void DisplayPlatformHeader()
+        {
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+            labelStyle.richText = true;
+
+            GUIStyle dropdownStyle = new GUIStyle(GUI.skin.FindStyle("dropdownButton"));
+            dropdownStyle.fixedHeight = 0;
+
+            BuildPlatformLists();
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.PrefixLabel("<b>Platforms</b>", dropdownStyle, labelStyle);
+
+            EditorGUI.BeginDisabledGroup(MissingPlatforms.Count == 0);
+
+            bool showPlatforms = EditorGUILayout.DropdownButton(new GUIContent("Add Platform"), FocusType.Passive, dropdownStyle);
+
+            EditorGUI.EndDisabledGroup();
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                AddPlatformButtonRect = GUILayoutUtility.GetLastRect();
+            }
+
+            if (GUILayout.Button(new GUIContent("Add Group")))
+            {
+                Settings settings = target as Settings;
+                settings.AddPlatformGroup("Group");
+                MissingPlatforms = null;
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            if (showPlatforms)
+            {
+                GenericMenu menu = new GenericMenu();
+
+                foreach (Platform platform in MissingPlatforms)
+                {
+                    menu.AddItem(new GUIContent(platform.DisplayName), false, AddPlatformProperties, platform.Identifier);
+                }
+
+                menu.DropDown(AddPlatformButtonRect);
+            }
+        }
+
+        private Dictionary<Platform, Rect> PlatformParentRect = new Dictionary<Platform, Rect>();
+
+        private void DisplayPlatformParent(Platform platform)
+        {
+            if (!platform.IsIntrinsic)
+            {
+                BuildPlatformLists();
+
+                Settings settings = target as Settings;
+
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.PrefixLabel("Inherit From");
+                bool showList = EditorGUILayout.DropdownButton(new GUIContent(platform.Parent.DisplayName), FocusType.Passive);
+
+                if (Event.current.type == EventType.Repaint)
+                {
+                    PlatformParentRect[platform] = GUILayoutUtility.GetLastRect();
+                }
+
+                if (showList)
+                {
+                    GenericMenu menu = new GenericMenu();
+#if UNITY_2018_2_OR_NEWER
+                    menu.allowDuplicateNames = true;
+#endif
+
+                    GenericMenu.MenuFunction2 setParent = (newParent) =>
+                    {
+                        platform.Parent = newParent as Platform;
+                    };
+
+                    Action<Platform> AddMenuItem = (candidate) =>
+                    {
+                        bool isCurrent = platform.Parent == candidate;
+                        menu.AddItem(new GUIContent(candidate.DisplayName), isCurrent, setParent, candidate);
+                    };
+
+                    AddMenuItem(settings.DefaultPlatform);
+
+                    bool separatorAdded = false;
+
+                    foreach (Platform candidate in ParentCandidates)
+                    {
+                        if (!candidate.InheritsFrom(platform))
+                        {
+                            if (!separatorAdded)
+                            {
+                                menu.AddSeparator(string.Empty);
+                                separatorAdded = true;
+                            }
+
+                            AddMenuItem(candidate);
+                        }
+                    }
+
+                    menu.DropDown(PlatformParentRect[platform]);
+                }
+
+                EditorGUILayout.EndHorizontal();
             }
         }
 
