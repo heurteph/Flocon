@@ -1186,6 +1186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulle: {fileID: 2017499722}
+  msg: "\rSous le sigle du renouveau, il apaise les chaleurs et rempli ses prairies
+    de mille et une couleurs."
   messageSpeed: 2
   preMessageDuration: 0.5
   postMessageDuration: 1.25
@@ -6274,6 +6276,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulle: {fileID: 2356727294840697109}
+  msg: "Colorant la for\xEAt toute peinte de blanc, \nSes f\xE9es viennent danser
+    au gr\xE9 du vent. "
   messageSpeed: 2
   preMessageDuration: 0.5
   postMessageDuration: 1.25
@@ -8597,6 +8601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulle: {fileID: 1728919487}
+  msg: "Le vent frais s'en ait all\xE9, la voil\xE0 libre et fi\xE8re de nous r\xE9chauffer."
   messageSpeed: 2
   preMessageDuration: 0.5
   postMessageDuration: 1.25

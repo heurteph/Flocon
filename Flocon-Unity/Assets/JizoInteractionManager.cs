@@ -10,7 +10,9 @@ public class JizoInteractionManager : MonoBehaviour
     public GameObject bulle;
     bool enigmeDone = false;
 
-    private string msg = "CECI EST UN MESSAGE DE LA PLUS HAUTE IMPORTANCE FSFFQSFSDFSFSDGGGGQFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf";
+    [SerializeField]
+    [TextArea]
+    private string msg;
 
     [Space]
     [Header("Message Animation Options")]
