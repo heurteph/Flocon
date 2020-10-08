@@ -53,7 +53,7 @@
 			<destination>{854cc497-d9bb-4b93-8a65-760ce96d3223}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{862112e7-c6d9-4be9-8330-0bc1a7373024}</destination>
+			<destination>{a63ef0e9-ee5c-42f5-beeb-5ff065d6f75d}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{a49a956d-b732-4192-acb0-ab7a8f3b5bd3}" />
@@ -109,9 +109,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b2929136-54eb-4be6-9cc0-69d0fbb62cc7}">
-		<property name="volume">
-			<value>5</value>
-		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -201,13 +198,20 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{9b1a3ac7-7a42-4e73-8818-2a49a4aad4b5}" />
-	<object class="SFXReverbEffect" id="{456e2c27-7041-4694-9962-476c26af74f7}" />
+	<object class="SFXReverbEffect" id="{456e2c27-7041-4694-9962-476c26af74f7}">
+		<property name="decayTime">
+			<value>3100</value>
+		</property>
+		<property name="wetLevel">
+			<value>0.5</value>
+		</property>
+	</object>
 	<object class="ThreeEQEffect" id="{94d859c7-2a77-4f0b-93da-949ec721d719}">
 		<property name="midGain">
 			<value>-8.5</value>
 		</property>
 		<property name="highGain">
-			<value>-1</value>
+			<value>-10.5</value>
 		</property>
 	</object>
 </objects>
