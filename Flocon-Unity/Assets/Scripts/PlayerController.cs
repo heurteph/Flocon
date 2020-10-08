@@ -156,6 +156,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            Walk();
             VictoryRotation();
         }
     }
