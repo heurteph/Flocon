@@ -24,7 +24,7 @@ public class AmbienceChanger : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.tag == "Player")
         {
