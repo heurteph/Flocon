@@ -15,6 +15,7 @@ TagManager:
   - Plan3
   - Plan4
   - Plan5
+  - Wall
   layers:
   - Default
   - TransparentFX

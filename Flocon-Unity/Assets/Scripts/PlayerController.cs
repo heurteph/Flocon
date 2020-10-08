@@ -83,7 +83,11 @@ public class PlayerController : MonoBehaviour
 
     private int groundMask;
 
+    private int wallMask;
+
     private bool isGrounded;
+
+    private bool canMoveForward;
 
     private Quaternion initialOrientation;
 
@@ -119,6 +123,7 @@ public class PlayerController : MonoBehaviour
         Debug.Assert(playerModel != null, "No Animator found for the player");
 
         groundMask = LayerMask.GetMask("Ground");
+        wallMask = LayerMask.GetMask("Wall");
 
         xSpeed = 0;
         ySpeed = 0;
@@ -127,6 +132,8 @@ public class PlayerController : MonoBehaviour
         facing = FACING.RIGHT;
         transitionTimer = 0;
         currentForward = playerModel.transform.forward;
+
+        canMoveForward = true;
 
         // TO DO : Set target rotation to the maxDegToTheGround if player spawn on a slope > maxDegToTheGround
         targetRotation = playerModel.transform.rotation;
@@ -163,19 +170,33 @@ public class PlayerController : MonoBehaviour
 
     private void Walk()
     {
+        RaycastHit hitWall;
+
         // Get inputs
         float xInput = inputsManager.GetComponent<InputsManager>().ReadWalk();
 
         if (facing == FACING.RIGHT)
         {
-            if(xInput < 0 && xSpeed == 0)
+            // Can walk
+            /*
+            if(Physics.Raycast(raycastOrigin.transform.position, Vector2.right, out hitWall, Mathf.Infinity, wallMask))
+            {
+                Debug.Log("Wall collision");
+                canMoveForward = false;
+            }
+            else
+            {
+                canMoveForward = true;
+            }*/
+
+            if (xInput < 0 && xSpeed == 0)
             {
                 // turn around
                 facing = FACING.TRANSITION;
                 currentForward = playerModel.transform.forward; // save this for coroutine
                 StartCoroutine(TurnToLeft());
             }
-            else if (xInput > 0)
+            else if (xInput > 0 && canMoveForward)
             {
                 // moving forward
                 if (xSpeed == 0) xSpeed = xMinSpeed;
@@ -192,7 +213,7 @@ public class PlayerController : MonoBehaviour
                 */
             }
             else // xInput == 0
-            if (xSpeed > 0)
+            if (xSpeed > 0 && canMoveForward)
             {
                 // stopping
                 transitionTimer = 0;
@@ -201,14 +222,25 @@ public class PlayerController : MonoBehaviour
         }
         else if (facing == FACING.LEFT)
         {
-            if(xInput > 0 && xSpeed == 0)
+            /*
+            if (Physics.Raycast(raycastOrigin.transform.position, Vector2.left, out hitWall, Mathf.Infinity, wallMask))
+            {
+                Debug.Log("Wall collision");
+                canMoveForward = false;
+            }
+            else
+            {
+                canMoveForward = true;
+            }*/
+
+            if (xInput > 0 && xSpeed == 0)
             {
                 // turn around
                 facing = FACING.TRANSITION;
                 currentForward = playerModel.transform.forward; // save this for coroutine
                 StartCoroutine(TurnToRight());
             }
-            if (xInput < 0)
+            if (xInput < 0 && canMoveForward)
             {
                 // moving forward
                 if (xSpeed == 0) xSpeed = -xMinSpeed;
@@ -225,7 +257,7 @@ public class PlayerController : MonoBehaviour
                 */
             }
             else // xInput == 0
-            if (xSpeed < 0)
+            if (xSpeed < 0 && canMoveForward)
             {
                 // stopping
                 transitionTimer = 0;
@@ -259,7 +291,8 @@ public class PlayerController : MonoBehaviour
                 groundTangent = -Vector2.Perpendicular(groundNormal); // 90 degrees clockwise
                 float angle = Vector3.Angle(Vector2.right, groundTangent);
                 velocity = groundTangent.normalized * xSpeed; // Take the sign into account
-                Debug.Log("Angle of the slope : " + angle);
+                
+                //Debug.Log("Angle of the slope : " + angle);
 
                 /* Handle tilting */
                 // TO DO : See if the rotation should not happen to the parent itself
@@ -267,18 +300,18 @@ public class PlayerController : MonoBehaviour
                 {
                     if (facing == FACING.RIGHT)
                     {
-                        Debug.Log("Looking at target right : " + targetRotation);
+                        //Debug.Log("Looking at target right : " + targetRotation);
                         targetRotation = Quaternion.LookRotation(groundTangent, Vector2.up);
                     }
                     else if (facing == FACING.LEFT)
                     {
-                        Debug.Log("Looking at target left : " + targetRotation);
+                        //Debug.Log("Looking at target left : " + targetRotation);
                         targetRotation = Quaternion.LookRotation(-groundTangent, Vector2.up);
                     }
                 }
                 else
                 {
-                    Debug.Log("Too slopy, target rotation stays the same " + targetRotation);
+                    //Debug.Log("Too slopy, target rotation stays the same " + targetRotation);
                     // 45 degrees orientation
                     // just keep the old target rotation, that will do
                 }
