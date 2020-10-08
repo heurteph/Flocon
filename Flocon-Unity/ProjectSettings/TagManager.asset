@@ -21,6 +21,7 @@ TagManager:
   - Fall
   - Summer
   - Spring
+  - CamerasManager
   layers:
   - Default
   - TransparentFX
