@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{6f59dbf9-919a-4b28-838b-4e8e4a78c623}">
+		<property name="assetPath">
+			<value>girl-breathing-sound-effects-all-sounds.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>306.91265306122449</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94be6338-ee5a-4c40-bfea-8c07387945e6}</destination>
+		</relationship>
+	</object>
+</objects>
