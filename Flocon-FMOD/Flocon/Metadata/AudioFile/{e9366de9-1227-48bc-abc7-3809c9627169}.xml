@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{e9366de9-1227-48bc-abc7-3809c9627169}">
+		<property name="assetPath">
+			<value>Door Heavy Open Close 02.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>3.7278458049886622</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94be6338-ee5a-4c40-bfea-8c07387945e6}</destination>
+		</relationship>
+	</object>
+</objects>
