@@ -38,5 +38,7 @@ public class AmbienceChanger : MonoBehaviour
                 FMODUnity.RuntimeManager.PlayOneShot(m_eventName);
             }
         }
+
+        Debug.Log("Triggered");
     }
 }
