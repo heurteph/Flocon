@@ -15,7 +15,7 @@ public class SeasonColor : MonoBehaviour
 
     private bool isRotating = false;
 
-    private bool firstZone = true;
+    private string lastZoneVisited;
 
     private Color[] hairColors = { new Color(0x00 / 255f, 0x4C / 255f, 0xEE), new Color(0xFF / 255f, 0x1E / 255f, 0x39 / 255f), new Color(0x70 / 255f, 0xB7 / 255f, 0x00 / 255f), new Color(1, 1, 1) };
 
@@ -30,6 +30,8 @@ public class SeasonColor : MonoBehaviour
 
         playerAnimator = playerModel.GetComponent<Animator>();
         Debug.Assert(playerModel != null, "No Animator found for the player");
+
+        lastZoneVisited = "Winter";
     }
 
     // Update is called once per frame
@@ -40,35 +42,33 @@ public class SeasonColor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(firstZone)
-        {
-            firstZone = false;
-            return;
-        }
-
-        if(collision.CompareTag("Winter"))
+        if(collision.CompareTag("Winter") && lastZoneVisited != "Winter")
         {
             StartCoroutine(HairTransitionColor(0));
             //hair.GetComponent<SkinnedMeshRenderer>().material.SetColor("_Color", hairColors[0]);
-            Debug.Log("inside winter");
+            //Debug.Log("inside winter");
+            lastZoneVisited = "Winter";
         }
-        else if (collision.CompareTag("Fall"))
+        else if (collision.CompareTag("Fall") && lastZoneVisited != "Fall")
         {
             StartCoroutine(HairTransitionColor(1));
             //hair.GetComponent<SkinnedMeshRenderer>().material.SetColor("_Color", hairColors[1]);
-            Debug.Log("inside fall");
+            //Debug.Log("inside fall");
+            lastZoneVisited = "Fall";
         }
-        else if (collision.CompareTag("Summer"))
+        else if (collision.CompareTag("Summer") && lastZoneVisited != "Summer")
         {
             StartCoroutine(HairTransitionColor(2));
             //hair.GetComponent<SkinnedMeshRenderer>().material.SetColor("_Color", hairColors[2]);
-            Debug.Log("inside summer");
+            //Debug.Log("inside summer");
+            lastZoneVisited = "Summer";
         }
-        else if (collision.CompareTag("Spring"))
+        else if (collision.CompareTag("Spring") && lastZoneVisited != "Spring")
         {
             StartCoroutine(HairTransitionColor(3));
             //hair.GetComponent<SkinnedMeshRenderer>().material.SetColor("_Color", hairColors[3]);
-            Debug.Log("inside spring");
+            //Debug.Log("inside spring");
+            lastZoneVisited = "Spring";
         }
     }
 

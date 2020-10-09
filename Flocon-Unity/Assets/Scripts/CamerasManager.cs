@@ -41,12 +41,14 @@ public class CamerasManager : MonoBehaviour
     {
         cam1.SetActive(false);
         cam2.SetActive(true);
+        Debug.Log("Winter to Fall");
     }
 
     public void FallToWinter()
     {
         cam1.SetActive(true);
         cam2.SetActive(false);
+        Debug.Log("Fall to Winter");
     }
 
     public void FallToSummer()
