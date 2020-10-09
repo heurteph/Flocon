@@ -14,6 +14,7 @@ public class VideoManager : MonoBehaviour
     {
         // Reset all values
         Destroy(GameObject.FindGameObjectWithTag("GameManager"));
+        Destroy(GameObject.FindGameObjectWithTag("MenuManager"));
 
         videoPlayer = GetComponent<VideoPlayer>();
         StartCoroutine(CheckEndVideo());
@@ -48,7 +49,7 @@ public class VideoManager : MonoBehaviour
         }
 
         Debug.Log("Animatic finished");
-        GameObject.FindGameObjectWithTag("MenuManager").GetComponent<MenuManager>().RestartAnimator();
+        //GameObject.FindGameObjectWithTag("MenuManager").GetComponent<MenuManager>().RestartAnimator();
 
         SceneManager.LoadScene(0);
     }

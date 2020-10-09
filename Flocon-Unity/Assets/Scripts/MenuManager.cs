@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
 
     public void Play()
     {
-        Debug.Log("Play");
+        //Debug.Log("Play");
         m_animator.SetTrigger("Disappear");
         m_paused = false;
 

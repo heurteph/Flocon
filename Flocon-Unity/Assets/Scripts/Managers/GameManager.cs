@@ -79,4 +79,9 @@ public class GameManager : MonoBehaviour
             menuManager.GetComponent<MenuManager>().ResumeGame();
         }
     }
+
+    private void OnDestroy()
+    {
+        inputsManager.GetComponent<InputsManager>().UnregisterPause(PauseGame);
+    }
 }
