@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+//using UnityEditor.Animations;
 using UnityEngine;
 
 public enum FACING { RIGHT, LEFT, TRANSITION}
@@ -145,7 +146,7 @@ public class PlayerController : MonoBehaviour
         inputsManager = GameObject.FindGameObjectWithTag("InputsManager");
         Debug.Assert(inputsManager != null, "Missing inputs manager");
 
-        GetStateMachineIds("marche", "idle", out walkStateId, out walkTransitionToIdleId);
+        //GetStateMachineIds("marche", "idle", out walkStateId, out walkTransitionToIdleId);
     }
 
     // Update is called once per frame
@@ -436,6 +437,7 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetBool("IsTurning", false);
     }
 
+    /*
     private void GetStateMachineIds(string stateFrom, string stateTo, out int stateId, out int transitionId)
     {
 
@@ -474,12 +476,15 @@ public class PlayerController : MonoBehaviour
             transitionId++;
         }
     }
+    */
 
+    /*
     private void ChangeTransitionDuration(int stateId, int transitionId, float duration)
     {
         AnimatorController ac = playerAnimator.runtimeAnimatorController as AnimatorController;
         ac.layers[0].stateMachine.states[stateId].state.transitions[transitionId].duration = duration;
     }
+    */
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
