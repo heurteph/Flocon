@@ -106,6 +106,8 @@ public class JizoInteractionManager : MonoBehaviour
                 {
                     /* Guerric : Yo, pose ton trigger là */
 
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/JIZOinteraction");
+
                     /*
                     if (textName.text == "Zeous")
                         AkSoundEngine.PostEvent("Play_Ecriture_Animation_Ange", gameObject);
