@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CamerasTrigger : MonoBehaviour
 {
-    public UnityAction action;
-
     private GameObject camerasManager;
 
     public delegate void TriggerHandler();
