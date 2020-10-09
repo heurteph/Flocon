@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 //using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum FACING { RIGHT, LEFT, TRANSITION}
 
@@ -145,6 +146,8 @@ public class PlayerController : MonoBehaviour
     {
         inputsManager = GameObject.FindGameObjectWithTag("InputsManager");
         Debug.Assert(inputsManager != null, "Missing inputs manager");
+
+        //xMaxSpeed = 50;
 
         //GetStateMachineIds("marche", "idle", out walkStateId, out walkTransitionToIdleId);
     }
@@ -349,6 +352,24 @@ public class PlayerController : MonoBehaviour
     private void VictoryRotation()
     {
         playerModel.transform.Rotate(Vector2.up, spinSpeed);
+
+        StartCoroutine(OpenCredit());
+    }
+
+    private IEnumerator OpenCredit()
+    {
+        float timer = 0;
+        float timeToFade = 2;
+
+        while(timer < timeToFade)
+        {
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        // Load Animatic
+
+        SceneManager.LoadScene(2);
     }
 
     private void Fall()

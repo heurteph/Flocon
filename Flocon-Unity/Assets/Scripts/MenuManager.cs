@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
 
             // Awake
+            m_animator.enabled = true;
         }
         else
         {
@@ -32,7 +33,7 @@ public class MenuManager : MonoBehaviour
     public void Play()
     {
         Debug.Log("Play");
-        m_animator.enabled = true;
+        m_animator.SetTrigger("Disappear");
         m_paused = false;
 
         // TO DO : Make sure the correct scene is loaded
@@ -42,6 +43,11 @@ public class MenuManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void RestartAnimator()
+    {
+        m_animator.SetTrigger("Restart");
     }
 
     void Update()
