@@ -7,6 +7,7 @@ using UnityEngine.Video;
 public class VideoManager : MonoBehaviour
 {
     private VideoPlayer videoPlayer;
+    FMOD.Studio.Bus masterBus;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,11 @@ public class VideoManager : MonoBehaviour
 
         videoPlayer = GetComponent<VideoPlayer>();
         StartCoroutine(CheckEndVideo());
+
+        masterBus = FMODUnity.RuntimeManager.GetBus("Bus:/");
+        masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Saisons", 0);
+
     }
 
     // Update is called once per frame

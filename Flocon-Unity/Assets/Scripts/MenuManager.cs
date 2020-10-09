@@ -11,6 +11,8 @@ public class MenuManager : MonoBehaviour
     public GameObject m_mainMenuObject;
     public GameObject m_pauseMenu;
 
+    FMOD.Studio.EventInstance instanceToStop;
+
     bool m_paused = false;
 
     private void Start()
@@ -28,6 +30,10 @@ public class MenuManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        instanceToStop = FMODUnity.RuntimeManager.CreateInstance("event:/Ambiance/Ambiance");
+        instanceToStop.start();
+        instanceToStop.release();
     }
 
     public void Play()
@@ -48,6 +54,8 @@ public class MenuManager : MonoBehaviour
     public void RestartAnimator()
     {
         m_animator.SetTrigger("Restart");
+        instanceToStop.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Saisons", 0);
     }
 
     void Update()
